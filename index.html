@@ -1089,19 +1089,116 @@
 
   .slide[data-title="Customers"] .panel.alt {
     padding: 20px;
+    background: #f5e2b6;
+    border-color: rgba(230,169,61,.7);
   }
 
   .slide[data-title="Customers"] .panel.alt h3 {
     margin-bottom: 10px;
+    color: #7b4d00;
   }
 
   .slide[data-title="Customers"] .panel.alt li {
     font-size: 16.5px;
     line-height: 1.24;
+    color: #45351b;
   }
 
   .slide[data-title="Customers"] .panel.alt li + li {
     margin-top: 6px;
+  }
+
+  .slide[data-title="Customers"] .panel:not(.alt) {
+    background: #16251f;
+    border-color: rgba(32,201,151,.45);
+  }
+
+  .slide[data-title="Customers"] .panel:not(.alt) h3 {
+    color: var(--green);
+  }
+
+  .slide[data-title="Customers"] .persona-map {
+    background:
+      linear-gradient(135deg, rgba(32,201,151,.12), transparent 42%),
+      linear-gradient(315deg, rgba(230,169,61,.13), transparent 48%),
+      #1d1a16;
+    border-color: rgba(230,169,61,.35);
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble {
+    background: #211f1b;
+    border-color: rgba(230,169,61,.32);
+    color: #dbcaa8;
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble:nth-child(2) {
+    border-color: rgba(32,201,151,.45);
+    color: #b7eadb;
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble:nth-child(3) {
+    border-color: rgba(224,100,85,.5);
+    color: #f1c1ba;
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble:nth-child(4) {
+    border-color: rgba(230,169,61,.55);
+    color: #f2d59a;
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble:nth-child(5) {
+    border-color: rgba(32,201,151,.45);
+    color: #b7eadb;
+  }
+
+  .slide[data-title="Customers"] .persona-map .bubble.main {
+    background: var(--green);
+    color: #071c15;
+    border-color: transparent;
+  }
+
+  .slide[data-title="Value"] .panel {
+    border-top: 4px solid var(--green);
+    background: #14241f;
+  }
+
+  .slide[data-title="Value"] .panel:nth-child(2) {
+    border-top-color: var(--amber);
+    background: #261f13;
+  }
+
+  .slide[data-title="Value"] .panel:nth-child(3) {
+    border-top-color: var(--red);
+    background: #281918;
+  }
+
+  .slide[data-title="Value"] .panel:nth-child(1) h3 { color: var(--green); }
+  .slide[data-title="Value"] .panel:nth-child(2) h3 { color: var(--amber); }
+  .slide[data-title="Value"] .panel:nth-child(3) h3 { color: #ff9c8f; }
+
+  .slide[data-title="Value"] .value-flow {
+    background:
+      linear-gradient(90deg, rgba(32,201,151,.12), rgba(230,169,61,.12), rgba(224,100,85,.12)),
+      #1a1a1a;
+    border-color: rgba(230,169,61,.35);
+  }
+
+  .slide[data-title="Value"] .value-pill:nth-of-type(2) {
+    background: #102820;
+    border-color: rgba(32,201,151,.6);
+    color: #b7eadb;
+  }
+
+  .slide[data-title="Value"] .value-pill:nth-of-type(3) {
+    background: #2b2111;
+    border-color: rgba(230,169,61,.65);
+    color: #f2d59a;
+  }
+
+  .slide[data-title="Value"] .value-pill:nth-of-type(4) {
+    background: #301917;
+    border-color: rgba(224,100,85,.65);
+    color: #f1c1ba;
   }
 
   @keyframes emphasis-pop {
