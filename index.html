@@ -361,8 +361,19 @@
   .cover-copy {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     min-height: 0;
+    position: relative;
+    text-align: center;
+    align-items: center;
+  }
+
+  .cover-main {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transform: translateY(-8px);
   }
 
   .cover-title span {
@@ -371,11 +382,16 @@
   }
 
   .cover-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
     border-top: 1px solid var(--line);
     padding-top: 22px;
     color: var(--muted);
     font-size: 18px;
     line-height: 1.5;
+    text-align: left;
   }
 
   .workflow {
@@ -1238,6 +1254,9 @@
     h1, .qa h2 { font-size: 56px; }
     h2 { font-size: 32px; }
     .section-title { max-width: none; }
+    .cover-copy { align-items: stretch; text-align: left; }
+    .cover-main { align-items: flex-start; transform: none; }
+    .cover-meta { position: static; margin-top: 28px; }
   }
 
   @media print {
@@ -1288,7 +1307,7 @@
         <section class="slide active" data-title="Pitch">
           <div class="cover content">
             <div class="cover-copy">
-              <div>
+              <div class="cover-main">
                 <h1 class="cover-title">AEGAS <span>for universities</span></h1>
                 <p class="subhead" style="margin-top: 26px;">Human-in-the-Loop AI grading and accreditation-ready reporting for handwritten exams.</p>
               </div>
