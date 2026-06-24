@@ -1441,6 +1441,10 @@
       .slide[data-title="Value"] .panel {
         border-top: 4px solid var(--green);
         background: #14241f;
+        padding: 20px 22px;
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
       }
 
       .slide[data-title="Value"] .panel:nth-child(2) {
@@ -1463,6 +1467,83 @@
         color: #ff9c8f;
       }
 
+      .slide[data-title="Value"] .value-top {
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 14px;
+        align-items: center;
+      }
+
+      .slide[data-title="Value"] .value-top h3 {
+        margin-bottom: 0;
+      }
+
+      .value-icon {
+        width: 54px;
+        height: 54px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        border: 1px solid currentColor;
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .value-icon svg {
+        width: 32px;
+        height: 32px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .impact-bars {
+        display: grid;
+        gap: 9px;
+        margin-top: auto;
+      }
+
+      .impact-row {
+        display: grid;
+        grid-template-columns: 132px 1fr;
+        gap: 10px;
+        align-items: center;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.2;
+      }
+
+      .impact-track {
+        height: 8px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+
+      .impact-fill {
+        display: block;
+        height: 100%;
+        width: var(--w);
+        border-radius: inherit;
+        background: currentColor;
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(1) .value-icon,
+      .slide[data-title="Value"] .panel:nth-child(1) .impact-fill {
+        color: var(--green);
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(2) .value-icon,
+      .slide[data-title="Value"] .panel:nth-child(2) .impact-fill {
+        color: var(--amber);
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(3) .value-icon,
+      .slide[data-title="Value"] .panel:nth-child(3) .impact-fill {
+        color: #ff9c8f;
+      }
+
       .slide[data-title="Value"] .value-flow {
         background:
           linear-gradient(
@@ -1473,6 +1554,25 @@
           ),
           #1a1a1a;
         border-color: rgba(230, 169, 61, 0.35);
+        min-height: 150px;
+        align-items: stretch;
+      }
+
+      .slide[data-title="Value"] .value-pill {
+        font-size: 20px;
+        font-weight: 720;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        justify-content: center;
+      }
+
+      .slide[data-title="Value"] .value-pill span {
+        color: inherit;
+        opacity: 0.78;
+        font-size: 14px;
+        font-weight: 560;
+        line-height: 1.2;
       }
 
       .slide[data-title="Value"] .value-pill:nth-of-type(2) {
@@ -1920,7 +2020,7 @@
             <div class="content team-grid">
               <div class="person">
                 <div class="role">CEO</div>
-                <strong>Tahamid Hossain</strong><span>Business Leader</span>
+                <strong>Tahamid Hossain</strong><span>Business Strategy and Leader</span>
               </div>
               <div class="person">
                 <div class="role">CTO</div>
@@ -2200,29 +2300,56 @@
               </h2>
             </div>
             <div class="content grid-3">
-              <div class="panel">
-                <h3>For instructors</h3>
+              <div class="panel value-card">
+                <div class="value-top">
+                  <div class="value-icon" aria-hidden="true">
+                    <svg viewBox="0 0 32 32"><path d="M8 22h16" /><path d="M10 8h12v14H10z" /><path d="M13 12h6" /><path d="M13 16h4" /></svg>
+                  </div>
+                  <h3>For instructors</h3>
+                </div>
                 <ul>
                   <li>Less grading fatigue.</li>
                   <li>Faster review cycles.</li>
                   <li>Clear control over every score.</li>
                 </ul>
+                <div class="impact-bars" aria-hidden="true">
+                  <div class="impact-row"><span>time saved</span><div class="impact-track"><span class="impact-fill" style="--w: 82%"></span></div></div>
+                  <div class="impact-row"><span>control retained</span><div class="impact-track"><span class="impact-fill" style="--w: 94%"></span></div></div>
+                </div>
               </div>
-              <div class="panel">
-                <h3>For students</h3>
+              <div class="panel value-card">
+                <div class="value-top">
+                  <div class="value-icon" aria-hidden="true">
+                    <svg viewBox="0 0 32 32"><path d="M8 10h16v10H11l-3 4z" /><path d="M12 14h8" /><path d="M12 17h5" /></svg>
+                  </div>
+                  <h3>For students</h3>
+                </div>
                 <ul>
                   <li>Quicker feedback.</li>
                   <li>More transparent grading.</li>
                   <li>Organized appeal submission and tracking.</li>
                 </ul>
+                <div class="impact-bars" aria-hidden="true">
+                  <div class="impact-row"><span>feedback speed</span><div class="impact-track"><span class="impact-fill" style="--w: 78%"></span></div></div>
+                  <div class="impact-row"><span>appeal clarity</span><div class="impact-track"><span class="impact-fill" style="--w: 86%"></span></div></div>
+                </div>
               </div>
-              <div class="panel">
-                <h3>For institutions</h3>
+              <div class="panel value-card">
+                <div class="value-top">
+                  <div class="value-icon" aria-hidden="true">
+                    <svg viewBox="0 0 32 32"><path d="M8 24V10" /><path d="M14 24V7" /><path d="M20 24V14" /><path d="M26 24V5" /><path d="M6 24h22" /></svg>
+                  </div>
+                  <h3>For institutions</h3>
+                </div>
                 <ul>
                   <li>Structured CLO analytics.</li>
                   <li>Accreditation-ready course reports.</li>
                   <li>Cleaner audit trails.</li>
                 </ul>
+                <div class="impact-bars" aria-hidden="true">
+                  <div class="impact-row"><span>report readiness</span><div class="impact-track"><span class="impact-fill" style="--w: 90%"></span></div></div>
+                  <div class="impact-row"><span>audit evidence</span><div class="impact-track"><span class="impact-fill" style="--w: 84%"></span></div></div>
+                </div>
               </div>
               <div class="figure value-flow" style="grid-column: span 3">
                 <svg
@@ -2233,10 +2360,10 @@
                   <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
                 </svg>
                 <div class="route-dot"></div>
-                <div class="value-pill">saved grading time</div>
-                <div class="value-pill">trusted score review</div>
-                <div class="value-pill">accreditation evidence</div>
-              </div>
+              <div class="value-pill">saved grading time<span>less manual marking load</span></div>
+              <div class="value-pill">trusted score review<span>instructor-approved outcomes</span></div>
+              <div class="value-pill">accreditation evidence<span>CLO reports and audit trails</span></div>
+            </div>
             </div>
             <div class="footer">
               <span>Value proposition</span><span>06 / 11</span>
