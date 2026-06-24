@@ -1209,6 +1209,280 @@
         padding: 10px;
       }
 
+      .slide[data-title="Solution"] .content {
+        grid-template-rows: 126px 1fr 92px;
+        gap: 12px;
+      }
+
+      .slide[data-title="Solution"] .workflow .step {
+        min-height: 126px;
+        padding: 12px;
+        gap: 8px;
+      }
+
+      .slide[data-title="Solution"] .workflow .step span {
+        font-size: 13.5px;
+        line-height: 1.2;
+      }
+
+      .slide[data-title="Solution"] .metric-strip {
+        gap: 12px;
+      }
+
+      .slide[data-title="Solution"] .metric {
+        padding: 14px 18px 13px;
+      }
+
+      .slide[data-title="Solution"] .metric strong {
+        display: block;
+        font-size: 23.5px;
+        line-height: 1.02;
+      }
+
+      .slide[data-title="Solution"] .metric span {
+        display: block;
+        margin-top: 7px;
+        font-size: 14.5px;
+        line-height: 1.18;
+      }
+
+      .slide[data-title="Solution"] .metric::before {
+        left: 18px;
+        right: 18px;
+        bottom: 10px;
+      }
+
+      .product-diagram {
+        min-height: 205px;
+        padding: 20px 24px 18px;
+        background:
+          linear-gradient(90deg, rgba(230, 169, 61, 0.1), transparent 42%),
+          linear-gradient(180deg, rgba(32, 201, 151, 0.08), transparent 58%),
+          #181818;
+        border-color: rgba(230, 169, 61, 0.34);
+      }
+
+      .product-diagram .visual-grid {
+        opacity: 0.34;
+      }
+
+      .diagram-lane {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(255, 255, 255, 0.025);
+        border-radius: 8px;
+      }
+
+      .diagram-lane.grading {
+        left: 22px;
+        top: 18px;
+        right: 22px;
+        height: 82px;
+        border-color: rgba(230, 169, 61, 0.24);
+      }
+
+      .diagram-lane.analytics {
+        left: 22px;
+        bottom: 18px;
+        width: 500px;
+        height: 82px;
+        border-color: rgba(32, 201, 151, 0.24);
+      }
+
+      .diagram-lane.appeals {
+        right: 22px;
+        bottom: 18px;
+        width: 500px;
+        height: 82px;
+        border-color: rgba(224, 100, 85, 0.24);
+      }
+
+      .diagram-label {
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        color: var(--soft);
+        font-size: 12px;
+      }
+
+      .diagram-arrows {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .diagram-arrows path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.62);
+        stroke-width: 2.4;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        stroke-dasharray: 8 11;
+      }
+
+      .diagram-arrows path.branch {
+        stroke: rgba(32, 201, 151, 0.5);
+        stroke-width: 2;
+        stroke-dasharray: 6 10;
+      }
+
+      .diagram-arrows path.appeal {
+        stroke: rgba(224, 100, 85, 0.5);
+      }
+
+      .slide.active .diagram-arrows path {
+        animation: dash-run 1.5s linear infinite;
+      }
+
+      .service-node {
+        position: absolute;
+        z-index: 2;
+        width: 136px;
+        min-height: 54px;
+        display: grid;
+        grid-template-columns: 34px 1fr;
+        gap: 9px;
+        align-items: center;
+        padding: 9px 10px;
+        border: 1px solid var(--line-2);
+        border-radius: 7px;
+        background: var(--cream);
+        color: var(--ink);
+        box-shadow: 0 2px 0 rgba(0, 0, 0, 0.24);
+      }
+
+      .service-node::before,
+      .service-node::after {
+        content: "";
+        position: absolute;
+        left: 13px;
+        width: 18px;
+        height: 2px;
+        background: rgba(22, 22, 22, 0.28);
+      }
+
+      .service-node::before {
+        top: 38px;
+      }
+
+      .service-node::after {
+        top: 43px;
+        width: 12px;
+      }
+
+      .service-node svg {
+        width: 28px;
+        height: 28px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.9;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .service-node span {
+        position: relative;
+        z-index: 1;
+        display: block;
+        font-size: 13px;
+        font-weight: 760;
+        line-height: 1.05;
+      }
+
+      .service-node small {
+        position: relative;
+        z-index: 1;
+        display: block;
+        margin-top: 4px;
+        color: rgba(22, 22, 22, 0.62);
+        font-size: 10px;
+        line-height: 1.05;
+      }
+
+      .service-node.intake {
+        left: 50px;
+        top: 42px;
+      }
+
+      .service-node.rubric {
+        left: 204px;
+        top: 42px;
+        border-color: rgba(230, 169, 61, 0.6);
+      }
+
+      .service-node.grader {
+        left: 358px;
+        top: 42px;
+        background: #f4dcab;
+        border-color: rgba(230, 169, 61, 0.72);
+      }
+
+      .service-node.verify {
+        left: 512px;
+        top: 42px;
+      }
+
+      .service-node.distribute {
+        left: 666px;
+        top: 42px;
+        background: #d6f0e5;
+        border-color: rgba(32, 201, 151, 0.58);
+      }
+
+      .service-node.analytics {
+        left: 142px;
+        bottom: 34px;
+        background: #d7eadf;
+        border-color: rgba(32, 201, 151, 0.58);
+      }
+
+      .service-node.reports {
+        left: 310px;
+        bottom: 34px;
+        background: #cfe4d8;
+        border-color: rgba(32, 201, 151, 0.64);
+      }
+
+      .service-node.portal {
+        right: 322px;
+        bottom: 34px;
+        background: #efd4b3;
+        border-color: rgba(230, 169, 61, 0.62);
+      }
+
+      .service-node.appeals {
+        right: 166px;
+        bottom: 34px;
+        background: #f5c8c2;
+        border-color: rgba(224, 100, 85, 0.62);
+      }
+
+      .service-node.audit {
+        right: 36px;
+        bottom: 34px;
+        width: 112px;
+        background: #f2e5c9;
+        border-color: rgba(230, 169, 61, 0.5);
+      }
+
+      .slide.active .service-node {
+        animation: node-breathe 3.6s var(--ease-out-quint) infinite;
+        animation-delay: var(--d, 0s);
+      }
+
+      @keyframes node-breathe {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-4px);
+        }
+      }
+
       .value-flow::before {
         content: "";
         position: absolute;
@@ -2422,33 +2696,158 @@
                   >
                 </div>
               </div>
-              <div class="figure value-flow">
-                <svg
-                  class="value-flow-svg"
-                  viewBox="0 0 696 122"
-                  aria-hidden="true"
-                >
-                  <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
+              <div class="figure product-diagram">
+                <div class="visual-grid"></div>
+                <div class="diagram-lane grading">
+                  <span class="diagram-label">grading service</span>
+                </div>
+                <div class="diagram-lane analytics">
+                  <span class="diagram-label">analytics service</span>
+                </div>
+                <div class="diagram-lane appeals">
+                  <span class="diagram-label">appeals service</span>
+                </div>
+                <svg class="diagram-arrows" viewBox="0 0 1152 220" aria-hidden="true">
+                  <defs>
+                    <marker
+                      id="solutionArrow"
+                      viewBox="0 0 10 10"
+                      refX="8"
+                      refY="5"
+                      markerWidth="5"
+                      markerHeight="5"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M0 0 L10 5 L0 10 Z" fill="rgba(230, 169, 61, 0.72)" />
+                    </marker>
+                    <marker
+                      id="solutionArrowGreen"
+                      viewBox="0 0 10 10"
+                      refX="8"
+                      refY="5"
+                      markerWidth="5"
+                      markerHeight="5"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M0 0 L10 5 L0 10 Z" fill="rgba(32, 201, 151, 0.66)" />
+                    </marker>
+                    <marker
+                      id="solutionArrowRed"
+                      viewBox="0 0 10 10"
+                      refX="8"
+                      refY="5"
+                      markerWidth="5"
+                      markerHeight="5"
+                      orient="auto-start-reverse"
+                    >
+                      <path d="M0 0 L10 5 L0 10 Z" fill="rgba(224, 100, 85, 0.66)" />
+                    </marker>
+                  </defs>
+                  <path marker-end="url(#solutionArrow)" d="M186 70 H204" />
+                  <path marker-end="url(#solutionArrow)" d="M340 70 H358" />
+                  <path marker-end="url(#solutionArrow)" d="M494 70 H512" />
+                  <path marker-end="url(#solutionArrow)" d="M648 70 H666" />
+                  <path
+                    class="branch"
+                    marker-end="url(#solutionArrowGreen)"
+                    d="M734 96 V139 H278"
+                  />
+                  <path
+                    class="branch"
+                    marker-end="url(#solutionArrowGreen)"
+                    d="M278 139 H310"
+                  />
+                  <path
+                    class="appeal"
+                    marker-end="url(#solutionArrowRed)"
+                    d="M782 96 V139 H830"
+                  />
+                  <path
+                    class="appeal"
+                    marker-end="url(#solutionArrowRed)"
+                    d="M966 165 H986"
+                  />
                 </svg>
-                <div class="value-pill">handwritten exams</div>
-                <div class="value-pill">instructor-approved AI</div>
-                <div class="value-pill">reports + appeals</div>
+                <div class="service-node intake" style="--d: 0s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M8 4h11l5 5v19H8z" />
+                    <path d="M19 4v6h6M12 15h9M12 20h7" />
+                  </svg>
+                  <span>Exam intake<small>handwritten PDFs</small></span>
+                </div>
+                <div class="service-node rubric" style="--d: 0.12s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M8 6h16v20H8zM12 11h8M12 16h8M12 21h5" />
+                    <path d="m22 20 2 2 4-5" />
+                  </svg>
+                  <span>Rubric gate<small>instructor approves</small></span>
+                </div>
+                <div class="service-node grader" style="--d: 0.24s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <rect x="7" y="9" width="18" height="15" rx="2" />
+                    <path d="M12 9V6h8v3M11 15h2M19 15h2M13 20h6" />
+                  </svg>
+                  <span>AI grading<small>draft marks</small></span>
+                </div>
+                <div class="service-node verify" style="--d: 0.36s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M7 17 13 23 25 9" />
+                    <path d="M8 7h12M8 12h8M8 27h16" />
+                  </svg>
+                  <span>Verification<small>human review</small></span>
+                </div>
+                <div class="service-node distribute" style="--d: 0.48s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M6 9h20v14H6z" />
+                    <path d="m6 10 10 8 10-8M10 25h12" />
+                  </svg>
+                  <span>Distribution<small>annotated results</small></span>
+                </div>
+                <div class="service-node analytics" style="--d: 0.6s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M7 24h18M10 21v-6M16 21V9M22 21v-9" />
+                  </svg>
+                  <span>CLO analytics<small>attainment view</small></span>
+                </div>
+                <div class="service-node reports" style="--d: 0.72s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M9 5h14v22H9zM13 11h6M13 16h6M13 21h4" />
+                  </svg>
+                  <span>Reports<small>accreditation ready</small></span>
+                </div>
+                <div class="service-node portal" style="--d: 0.84s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M6 8h20v15H6zM11 27h10M14 23v4M10 13h12" />
+                  </svg>
+                  <span>Student portal<small>view feedback</small></span>
+                </div>
+                <div class="service-node appeals" style="--d: 0.96s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M8 8h16v12H13l-5 5z" />
+                    <path d="M13 13h7M13 17h5" />
+                  </svg>
+                  <span>Appeals<small>structured review</small></span>
+                </div>
+                <div class="service-node audit" style="--d: 1.08s">
+                  <svg viewBox="0 0 32 32" aria-hidden="true">
+                    <path d="M10 5h12v22H10zM14 10h4M14 15h4M14 20h4" />
+                    <path d="M8 8h2M8 24h2" />
+                  </svg>
+                  <span>Audit trail<small>traceable</small></span>
+                </div>
               </div>
               <div class="metric-strip">
                 <div class="metric">
                   <strong>Human oversight first</strong
-                  ><span>AEGAS drafts. The instructor decides.</span>
+                  ><span>AEGAS drafts. Instructor approves.</span>
                 </div>
                 <div class="metric">
                   <strong>Accuracy before automation</strong
-                  ><span>Automation is useful only when it is reviewable.</span>
+                  ><span>Reviewable automation, not black boxes.</span>
                 </div>
                 <div class="metric">
                   <strong>Transparent grading</strong
-                  ><span
-                    >Students and departments see clearer evidence and audit
-                    trails.</span
-                  >
+                  ><span>Clear evidence and audit trails.</span>
                 </div>
               </div>
             </div>
