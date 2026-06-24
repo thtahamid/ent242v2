@@ -2175,6 +2175,431 @@
         background: var(--amber);
       }
 
+      .slide[data-title="Competitors"] .position-map {
+        background:
+          linear-gradient(135deg, rgba(32, 201, 151, 0.1), transparent 46%),
+          linear-gradient(315deg, rgba(224, 100, 85, 0.08), transparent 48%),
+          #181818;
+        border-color: rgba(230, 169, 61, 0.32);
+      }
+
+      .market-radar {
+        position: absolute;
+        inset: 26px 32px 38px 42px;
+        pointer-events: none;
+      }
+
+      .market-radar circle,
+      .market-radar path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.24);
+        stroke-width: 1.5;
+        stroke-dasharray: 7 10;
+      }
+
+      .market-radar path.green {
+        stroke: rgba(32, 201, 151, 0.3);
+      }
+
+      .slide.active .market-radar circle,
+      .slide.active .market-radar path {
+        animation: dash-run 2.2s linear infinite;
+      }
+
+      .slide[data-title="Competitors"] .plot {
+        display: grid;
+        grid-template-columns: 22px 1fr;
+        gap: 8px;
+        align-items: center;
+        min-height: 44px;
+      }
+
+      .plot-icon {
+        width: 22px;
+        height: 22px;
+        border-radius: 5px;
+        display: grid;
+        place-items: center;
+        color: currentColor;
+      }
+
+      .plot-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .slide[data-title="Competitors"] .plot.lms {
+        border-color: rgba(230, 169, 61, 0.46);
+        color: #f2d59a;
+        background: #241f16;
+      }
+
+      .slide[data-title="Competitors"] .plot.grade {
+        border-color: rgba(32, 201, 151, 0.46);
+        color: #b7eadb;
+        background: #14241f;
+      }
+
+      .slide[data-title="Competitors"] .plot.ai-prompt {
+        border-color: rgba(224, 100, 85, 0.46);
+        color: #f1c1ba;
+        background: #281918;
+      }
+
+      .slide[data-title="Competitors"] .compare th:nth-child(1),
+      .slide[data-title="Competitors"] .compare td:nth-child(1) {
+        width: 26%;
+      }
+
+      .slide[data-title="Competitors"] .compare th {
+        color: #f2d59a;
+        border-bottom-color: rgba(230, 169, 61, 0.28);
+      }
+
+      .slide[data-title="Competitors"] .compare tbody tr:nth-child(1) td {
+        background: rgba(230, 169, 61, 0.035);
+      }
+
+      .slide[data-title="Competitors"] .compare tbody tr:nth-child(2) td {
+        background: rgba(32, 201, 151, 0.035);
+      }
+
+      .slide[data-title="Competitors"] .compare tbody tr:nth-child(4) td {
+        background: rgba(224, 100, 85, 0.035);
+      }
+
+      .slide[data-title="Difference"] .content {
+        gap: 14px;
+      }
+
+      .slide[data-title="Difference"] .panel {
+        padding: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-color: rgba(230, 169, 61, 0.25);
+        background:
+          linear-gradient(135deg, rgba(230, 169, 61, 0.08), transparent 54%),
+          var(--panel);
+      }
+
+      .slide[data-title="Difference"] .panel:nth-child(2) {
+        border-color: rgba(32, 201, 151, 0.34);
+        background:
+          linear-gradient(135deg, rgba(32, 201, 151, 0.1), transparent 54%),
+          var(--panel);
+      }
+
+      .slide[data-title="Difference"] .panel:nth-child(3) {
+        border-color: rgba(230, 169, 61, 0.34);
+      }
+
+      .slide[data-title="Difference"] .panel:nth-child(4) {
+        border-color: rgba(224, 100, 85, 0.34);
+        background:
+          linear-gradient(135deg, rgba(224, 100, 85, 0.1), transparent 54%),
+          var(--panel);
+      }
+
+      .slide[data-title="Difference"] .panel.alt {
+        background: #f5e2b6;
+        border-color: rgba(230, 169, 61, 0.68);
+      }
+
+      .diff-top,
+      .canvas-top {
+        display: grid;
+        grid-template-columns: 40px 1fr;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .diff-icon,
+      .canvas-icon,
+      .gtm-icon {
+        width: 40px;
+        height: 40px;
+        border: 1px solid currentColor;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--amber);
+        flex: 0 0 auto;
+      }
+
+      .diff-icon svg,
+      .canvas-icon svg,
+      .gtm-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .slide[data-title="Difference"] .panel:nth-child(2) .diff-icon,
+      .slide[data-title="Difference"] .panel:nth-child(2) h3 {
+        color: var(--green);
+      }
+
+      .slide[data-title="Difference"] .panel:nth-child(4) .diff-icon,
+      .slide[data-title="Difference"] .panel:nth-child(4) h3 {
+        color: #ff9c8f;
+      }
+
+      .slide[data-title="Difference"] .panel h3 {
+        margin-bottom: 0;
+        font-size: 21px;
+      }
+
+      .slide[data-title="Difference"] .panel p {
+        font-size: 16px;
+        line-height: 1.28;
+      }
+
+      .slide[data-title="Difference"] .flywheel {
+        min-height: 126px;
+        background:
+          linear-gradient(90deg, rgba(230, 169, 61, 0.11), rgba(32, 201, 151, 0.08), rgba(224, 100, 85, 0.08)),
+          #181818;
+        border-color: rgba(230, 169, 61, 0.34);
+      }
+
+      .slide[data-title="Difference"] .flywheel-item {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 9px;
+        align-items: center;
+        place-items: initial;
+        font-weight: 760;
+      }
+
+      .slide[data-title="Difference"] .flywheel-item svg {
+        width: 24px;
+        height: 24px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .slide[data-title="Difference"] .flywheel-item:nth-of-type(1) {
+        color: #f2d59a;
+        border-color: rgba(230, 169, 61, 0.5);
+      }
+
+      .slide[data-title="Difference"] .flywheel-item:nth-of-type(2) {
+        color: #b7eadb;
+        border-color: rgba(32, 201, 151, 0.5);
+      }
+
+      .slide[data-title="Difference"] .flywheel-item:nth-of-type(3) {
+        color: #f2d59a;
+        border-color: rgba(230, 169, 61, 0.5);
+      }
+
+      .slide[data-title="Difference"] .flywheel-item:nth-of-type(4) {
+        color: #f1c1ba;
+        border-color: rgba(224, 100, 85, 0.5);
+      }
+
+      .slide[data-title="GTM"] .journey {
+        gap: 12px;
+        position: relative;
+      }
+
+      .gtm-route {
+        position: absolute;
+        inset: 54px 52px auto;
+        height: 58px;
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      .gtm-route path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.4);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 10 13;
+      }
+
+      .slide.active .gtm-route path {
+        animation: dash-run 1.6s linear infinite;
+      }
+
+      .slide[data-title="GTM"] .journey .step {
+        z-index: 1;
+        min-height: 304px;
+        padding: 16px;
+        border-color: rgba(230, 169, 61, 0.3);
+        background:
+          linear-gradient(180deg, rgba(230, 169, 61, 0.09), transparent 42%),
+          var(--panel);
+      }
+
+      .slide[data-title="GTM"] .journey .step:nth-of-type(2),
+      .slide[data-title="GTM"] .journey .step:nth-of-type(4) {
+        border-color: rgba(32, 201, 151, 0.34);
+        background:
+          linear-gradient(180deg, rgba(32, 201, 151, 0.09), transparent 42%),
+          var(--panel);
+      }
+
+      .slide[data-title="GTM"] .journey .step:nth-of-type(5) {
+        border-color: rgba(224, 100, 85, 0.34);
+        background:
+          linear-gradient(180deg, rgba(224, 100, 85, 0.09), transparent 42%),
+          var(--panel);
+      }
+
+      .slide[data-title="GTM"] .journey .step b {
+        font-size: 20px;
+      }
+
+      .slide[data-title="GTM"] .journey .step span {
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .slide[data-title="GTM"] .gtm-icon {
+        color: var(--amber);
+      }
+
+      .slide[data-title="GTM"] .journey .step:nth-of-type(2) .gtm-icon,
+      .slide[data-title="GTM"] .journey .step:nth-of-type(4) .gtm-icon {
+        color: var(--green);
+      }
+
+      .slide[data-title="GTM"] .journey .step:nth-of-type(5) .gtm-icon {
+        color: #ff9c8f;
+      }
+
+      .channel-bars {
+        margin-top: auto;
+        display: grid;
+        gap: 7px;
+      }
+
+      .channel-bars i {
+        display: block;
+        height: 6px;
+        width: var(--w);
+        border-radius: 4px;
+        background: currentColor;
+        opacity: 0.78;
+      }
+
+      .slide[data-title="Business Model"] .canvas {
+        gap: 9px;
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel {
+        padding: 14px;
+        border-color: rgba(230, 169, 61, 0.25);
+        background:
+          linear-gradient(135deg, rgba(230, 169, 61, 0.07), transparent 55%),
+          var(--panel);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(2),
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(6) {
+        border-color: rgba(32, 201, 151, 0.32);
+        background:
+          linear-gradient(135deg, rgba(32, 201, 151, 0.08), transparent 55%),
+          var(--panel);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(4),
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(7) {
+        border-color: rgba(224, 100, 85, 0.3);
+        background:
+          linear-gradient(135deg, rgba(224, 100, 85, 0.08), transparent 55%),
+          var(--panel);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel.center-value {
+        background:
+          linear-gradient(180deg, rgba(230, 169, 61, 0.18), transparent 52%),
+          #f5e2b6;
+        border-color: rgba(230, 169, 61, 0.7);
+        color: var(--ink);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel.center-value li {
+        color: #554d42;
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel.center-value h3 {
+        color: #2a2112;
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel.center-value .canvas-icon {
+        color: #9b6509;
+        background: rgba(255, 255, 255, 0.38);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel h3 {
+        margin-bottom: 0;
+        font-size: 17px;
+      }
+
+      .slide[data-title="Business Model"] .canvas li {
+        font-size: 13.5px;
+        line-height: 1.2;
+      }
+
+      .slide[data-title="Business Model"] .canvas ul {
+        margin-top: 10px;
+      }
+
+      .slide[data-title="Business Model"] .canvas-icon {
+        width: 34px;
+        height: 34px;
+      }
+
+      .slide[data-title="Business Model"] .canvas-icon svg {
+        width: 21px;
+        height: 21px;
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(2) .canvas-icon,
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(6) .canvas-icon {
+        color: var(--green);
+      }
+
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(4) .canvas-icon,
+      .slide[data-title="Business Model"] .canvas .panel:nth-child(7) .canvas-icon {
+        color: #ff9c8f;
+      }
+
+      .model-strip {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-top: auto;
+      }
+
+      .model-chip {
+        border: 1px solid currentColor;
+        border-radius: 6px;
+        padding: 8px;
+        color: #7b4d00;
+        font-size: 12px;
+        font-weight: 760;
+        line-height: 1.1;
+        background: rgba(255, 255, 255, 0.32);
+      }
+
       .metric:nth-child(2) {
         border-top-color: var(--amber);
       }
@@ -3012,16 +3437,21 @@
             <div class="content">
               <div class="figure position-map">
                 <div class="visual-grid"></div>
+                <svg class="market-radar" viewBox="0 0 1020 150" aria-hidden="true">
+                  <circle cx="768" cy="48" r="42" />
+                  <circle cx="768" cy="48" r="74" />
+                  <path class="green" d="M76 112 C210 62 344 94 472 72 S720 24 890 48" />
+                </svg>
                 <div class="quadrant q1"></div>
                 <div class="quadrant q2"></div>
                 <div class="axis x"></div>
                 <div class="axis y"></div>
                 <div class="axis-label right">workflow coverage</div>
                 <div class="axis-label top">instructor control</div>
-                <div class="plot lms">LMS platforms</div>
-                <div class="plot grade">grading tools</div>
-                <div class="plot ai-prompt">generic AI prompts</div>
-                <div class="plot aegas">AEGAS: full cycle + HITL</div>
+                <div class="plot lms"><span class="plot-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 9h18v14H7z" /><path d="M11 13h10M11 18h6" /></svg></span>LMS platforms</div>
+                <div class="plot grade"><span class="plot-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 7h16v20H8z" /><path d="M12 13h8M12 18h8M12 23h5" /></svg></span>grading tools</div>
+                <div class="plot ai-prompt"><span class="plot-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><rect x="7" y="9" width="18" height="15" rx="2" /><path d="M12 15h2M18 15h2M13 20h6" /></svg></span>generic AI prompts</div>
+                <div class="plot aegas"><span class="plot-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 16l5 5L24 9" /><path d="M7 25h18M7 7h12" /></svg></span>AEGAS: full cycle + HITL</div>
               </div>
               <table class="compare">
                 <thead>
@@ -3083,28 +3513,40 @@
             </div>
             <div class="content grid-4">
               <div class="panel alt">
-                <h3>Human-in-the-Loop</h3>
+                <div class="diff-top">
+                  <span class="diff-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 6v20M7 15h18" /><path d="M10 9h12v14H10z" /></svg></span>
+                  <h3>Human-in-the-Loop</h3>
+                </div>
                 <p>
                   The instructor remains the final authority, reducing trust
                   barriers and grading bias concerns.
                 </p>
               </div>
               <div class="panel">
-                <h3>Handwritten exam focus</h3>
+                <div class="diff-top">
+                  <span class="diff-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 4h12l4 4v20H8z" /><path d="M20 4v5h5M12 15h8M12 20h6" /></svg></span>
+                  <h3>Handwritten exam focus</h3>
+                </div>
                 <p>
                   The product targets a bottleneck that many LMS platforms do
                   not directly solve.
                 </p>
               </div>
               <div class="panel">
-                <h3>CLO and reports</h3>
+                <div class="diff-top">
+                  <span class="diff-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 24h18M10 21v-6M16 21V9M22 21v-9" /><path d="M8 6h16" /></svg></span>
+                  <h3>CLO and reports</h3>
+                </div>
                 <p>
                   Scores turn into structured course and accreditation documents
                   without manual re-entry.
                 </p>
               </div>
               <div class="panel">
-                <h3>Appeal workflow</h3>
+                <div class="diff-top">
+                  <span class="diff-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 8h16v12H13l-5 5z" /><path d="M13 13h7M13 17h5" /></svg></span>
+                  <h3>Appeal workflow</h3>
+                </div>
                 <p>
                   Feedback, student distribution, and appeals are part of the
                   same process instead of an afterthought.
@@ -3138,10 +3580,10 @@
                     d="M888 68 C765 122 632 122 510 68 C390 18 255 18 142 68"
                   />
                 </svg>
-                <div class="flywheel-item">trust</div>
-                <div class="flywheel-item">speed</div>
-                <div class="flywheel-item">evidence</div>
-                <div class="flywheel-item">adoption</div>
+                <div class="flywheel-item"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 5l10 5v7c0 6-4 9-10 11-6-2-10-5-10-11v-7z" /><path d="m11 16 3 3 7-7" /></svg>trust</div>
+                <div class="flywheel-item"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 18a10 10 0 1 0 3-7" /><path d="M16 10v7l5 3" /></svg>speed</div>
+                <div class="flywheel-item"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M9 5h14v22H9z" /><path d="M13 11h6M13 16h6M13 21h4" /></svg>evidence</div>
+                <div class="flywheel-item"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 23c2-4 5-6 8-6s6 2 8 6" /><circle cx="16" cy="11" r="4" /><path d="M24 8l3-3M25 13h4" /></svg>adoption</div>
               </div>
             </div>
             <div class="footer">
@@ -3157,45 +3599,58 @@
               </h2>
             </div>
             <div class="content journey">
+              <svg class="gtm-route" viewBox="0 0 1040 58" aria-hidden="true">
+                <path d="M22 42 C138 8 246 8 348 32 S552 58 656 28 S856 0 1018 38" />
+              </svg>
               <div class="step">
                 <div class="number">1</div>
+                <span class="gtm-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 16h6l10-7v14l-10-7H5z" /><path d="M24 12c2 2 2 6 0 8" /></svg></span>
                 <b>Awareness</b
                 ><span
                   >University meetings, LMS channels, academic technology
                   events, and faculty recommendations.</span
                 >
+                <div class="channel-bars" aria-hidden="true"><i style="--w: 72%"></i><i style="--w: 58%"></i></div>
               </div>
               <div class="step">
                 <div class="number">2</div>
+                <span class="gtm-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M4 16s5-8 12-8 12 8 12 8-5 8-12 8S4 16 4 16z" /><circle cx="16" cy="16" r="3" /></svg></span>
                 <b>Consideration</b
                 ><span
                   >Live demos, trial access, case studies, and comparison
                   against manual grading.</span
                 >
+                <div class="channel-bars" aria-hidden="true"><i style="--w: 82%"></i><i style="--w: 64%"></i></div>
               </div>
               <div class="step">
                 <div class="number">3</div>
+                <span class="gtm-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 9h16v14H8z" /><path d="M11 14h10M11 18h7M23 7v4M9 7v4" /></svg></span>
                 <b>Purchase</b
                 ><span
                   >Department pilot, LMS integration setup, rubric templates,
                   and onboarding support.</span
                 >
+                <div class="channel-bars" aria-hidden="true"><i style="--w: 76%"></i><i style="--w: 70%"></i></div>
               </div>
               <div class="step">
                 <div class="number">4</div>
+                <span class="gtm-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 16a8 8 0 1 0 3-6" /><path d="M8 8v7h7" /><path d="M20 16l-4 4-3-3" /></svg></span>
                 <b>Retention</b
                 ><span
                   >Regular exam usage, CLO reports, appeals dashboard, support,
                   and training workshops.</span
                 >
+                <div class="channel-bars" aria-hidden="true"><i style="--w: 88%"></i><i style="--w: 74%"></i></div>
               </div>
               <div class="step">
                 <div class="number">5</div>
+                <span class="gtm-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 5l3 7h7l-5 5 2 8-7-4-7 4 2-8-5-5h7z" /></svg></span>
                 <b>Advocacy</b
                 ><span
                   >Faculty referrals, department adoption, accreditation
                   evidence, and success stories.</span
                 >
+                <div class="channel-bars" aria-hidden="true"><i style="--w: 92%"></i><i style="--w: 80%"></i></div>
               </div>
             </div>
             <div class="footer">
@@ -3212,7 +3667,10 @@
             </div>
             <div class="content canvas">
               <div class="panel tall">
-                <h3>Key partners</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M10 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM22 17a4 4 0 1 0 0-8 4 4 0 0 0 0 8z" /><path d="M4 26c1-5 4-7 6-7s5 2 6 7M16 26c1-5 4-7 6-7s5 2 6 7" /></svg></span>
+                  <h3>Key partners</h3>
+                </div>
                 <ul>
                   <li>Universities and colleges</li>
                   <li>LMS providers</li>
@@ -3221,7 +3679,10 @@
                 </ul>
               </div>
               <div class="panel">
-                <h3>Key activities</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M7 16h6l3-8 3 16 3-8h3" /></svg></span>
+                  <h3>Key activities</h3>
+                </div>
                 <ul>
                   <li>AI-assisted grading</li>
                   <li>CLO analytics</li>
@@ -3230,7 +3691,10 @@
                 </ul>
               </div>
               <div class="panel center-value tall">
-                <h3>Value propositions</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 16l5 5L24 9" /><path d="M7 25h18M7 7h12" /></svg></span>
+                  <h3>Value propositions</h3>
+                </div>
                 <ul>
                   <li>Faster and more accurate grading</li>
                   <li>Human-in-the-Loop verification</li>
@@ -3238,9 +3702,16 @@
                   <li>Transparent appeals</li>
                   <li>Accreditation-ready reporting</li>
                 </ul>
+                <div class="model-strip">
+                  <div class="model-chip">subscription pricing</div>
+                  <div class="model-chip">department pilots</div>
+                </div>
               </div>
               <div class="panel">
-                <h3>Relationships</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 8h16v12H13l-5 5z" /><path d="M13 13h7M13 17h5" /></svg></span>
+                  <h3>Relationships</h3>
+                </div>
                 <ul>
                   <li>Personalized onboarding</li>
                   <li>Technical support</li>
@@ -3249,7 +3720,10 @@
                 </ul>
               </div>
               <div class="panel tall">
-                <h3>Customers</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 24c2-5 5-7 8-7s6 2 8 7" /><circle cx="16" cy="11" r="4" /><path d="M6 26h20" /></svg></span>
+                  <h3>Customers</h3>
+                </div>
                 <ul>
                   <li>Instructors</li>
                   <li>Professors</li>
@@ -3258,7 +3732,10 @@
                 </ul>
               </div>
               <div class="panel">
-                <h3>Resources</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M8 5h16v22H8z" /><path d="M12 10h8M12 15h8M12 20h5" /></svg></span>
+                  <h3>Resources</h3>
+                </div>
                 <ul>
                   <li>AI grading system</li>
                   <li>Cloud infrastructure</li>
@@ -3267,7 +3744,10 @@
                 </ul>
               </div>
               <div class="panel">
-                <h3>Channels</h3>
+                <div class="canvas-top">
+                  <span class="canvas-icon"><svg viewBox="0 0 32 32" aria-hidden="true"><path d="M5 16h6l10-7v14l-10-7H5z" /><path d="M24 12c2 2 2 6 0 8" /></svg></span>
+                  <h3>Channels</h3>
+                </div>
                 <ul>
                   <li>Direct university sales</li>
                   <li>Website demos</li>
