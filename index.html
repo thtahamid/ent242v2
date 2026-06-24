@@ -1068,8 +1068,23 @@
   }
 
   .slide[data-title="Problem"] .big-line {
-    font-size: 28px;
-    line-height: 1.15;
+    font-size: 32px;
+    line-height: 1.12;
+  }
+
+  .problem-statement {
+    background: #241f16;
+    border-color: rgba(230,169,61,.55);
+    display: flex;
+    align-items: center;
+    min-height: 250px;
+  }
+
+  .slide[data-title="Problem"] .problem-statement p {
+    color: var(--amber);
+    font-size: 38px;
+    line-height: 1.08;
+    letter-spacing: -.02em;
   }
 
   .slide[data-title="Customers"] .panel.alt {
@@ -1375,7 +1390,6 @@
         <section class="slide" data-title="Problem">
           <div class="slide-head">
             <h2>Manual grading creates a business problem for universities, not just an inconvenience for instructors.</h2>
-            <p class="section-title">The customer insight document repeatedly points to grading fatigue, reporting backlog, privacy concerns, and appeal pressure.</p>
           </div>
           <div class="content grid-3">
             <div class="panel"><h3>Time loss</h3><p>Handwritten exam grading is slow, repetitive, and concentrated around midterm and final deadlines.</p></div>
@@ -1400,7 +1414,7 @@
                 <span class="node-label three">reports</span>
               </div>
             </div>
-            <div class="panel alt" style="grid-column:span 2;"><p class="big-line">The pain is not only "grading takes long." It is the chain reaction: overloaded instructors, slower student feedback, appeal friction, and weak reporting evidence.</p></div>
+            <div class="panel problem-statement" style="grid-column:span 2;"><p class="big-line">The pain is not only "grading takes long." It is the chain reaction: overloaded instructors, slower student feedback, appeal friction, and weak reporting evidence.</p></div>
           </div>
           <div class="footer"><span>Problem we see</span><span>03 / 11</span></div>
         </section>
@@ -1408,7 +1422,6 @@
         <section class="slide" data-title="Solution">
           <div class="slide-head">
             <h2>AEGAS provides AI assistance without removing instructor authority.</h2>
-            <p class="section-title">The platform supports grading, analytics, distribution, and appeals in one workflow.</p>
           </div>
           <div class="content">
             <div class="workflow">
@@ -1439,7 +1452,6 @@
         <section class="slide" data-title="Customers">
           <div class="slide-head">
             <h2>Our first customers are instructors and academic departments with heavy assessment workloads.</h2>
-            <p class="section-title">The persona from the PDF: professors handling large-cohort handwritten exam grading.</p>
           </div>
           <div class="content wide-left">
             <div class="panel alt">
@@ -1474,7 +1486,6 @@
         <section class="slide" data-title="Value">
           <div class="slide-head">
             <h2>AEGAS gives educators back time while making assessment evidence easier to trust.</h2>
-            <p class="section-title">Value comes from combining grading assistance and compliance-ready outputs in one product.</p>
           </div>
           <div class="content grid-3">
             <div class="panel"><h3>For instructors</h3><ul><li>Less grading fatigue.</li><li>Faster review cycles.</li><li>Clear control over every score.</li></ul></div>
@@ -1496,7 +1507,6 @@
         <section class="slide" data-title="Competitors">
           <div class="slide-head">
             <h2>Competitors solve pieces of the workflow. AEGAS is designed around the full assessment cycle.</h2>
-            <p class="section-title">The PDF names LMS platforms, manual spreadsheets, generic AI prompting, and grading alternatives such as Gradescope.</p>
           </div>
           <div class="content">
             <div class="figure position-map">
@@ -1530,7 +1540,6 @@
         <section class="slide" data-title="Difference">
           <div class="slide-head">
             <h2>Our differentiation is controlled automation for handwritten assessment, not black-box grading.</h2>
-            <p class="section-title">AEGAS is positioned around instructor trust, university workflows, and compliance evidence.</p>
           </div>
           <div class="content grid-4">
             <div class="panel alt"><h3>Human-in-the-Loop</h3><p>The instructor remains the final authority, reducing trust barriers and grading bias concerns.</p></div>
@@ -1559,7 +1568,6 @@
         <section class="slide" data-title="GTM">
           <div class="slide-head">
             <h2>Go-to-market starts inside departments where grading pressure is visible and urgent.</h2>
-            <p class="section-title">Customer journey stages from the PDF: awareness, consideration, purchase, retention, advocacy.</p>
           </div>
           <div class="content journey">
             <div class="step"><div class="number">1</div><b>Awareness</b><span>University meetings, LMS channels, academic technology events, and faculty recommendations.</span></div>
@@ -1574,7 +1582,6 @@
         <section class="slide" data-title="Business Model">
           <div class="slide-head">
             <h2>Business model: sell trusted assessment infrastructure to universities.</h2>
-            <p class="section-title">Condensed from the Business Model Canvas in the customer insights file.</p>
           </div>
           <div class="content canvas">
             <div class="panel tall"><h3>Key partners</h3><ul><li>Universities and colleges</li><li>LMS providers</li><li>Cloud and AI providers</li><li>Accreditation organizations</li></ul></div>
