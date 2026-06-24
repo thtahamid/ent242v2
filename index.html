@@ -1300,9 +1300,13 @@
       .diagram-label {
         position: absolute;
         left: 12px;
-        top: 8px;
+        top: 7px;
+        z-index: 4;
+        padding: 0 6px;
+        background: #181818;
         color: var(--soft);
         font-size: 12px;
+        line-height: 1.1;
       }
 
       .diagram-arrows {
@@ -1404,65 +1408,65 @@
 
       .service-node.intake {
         left: 50px;
-        top: 42px;
+        top: 36px;
       }
 
       .service-node.rubric {
         left: 204px;
-        top: 42px;
+        top: 36px;
         border-color: rgba(230, 169, 61, 0.6);
       }
 
       .service-node.grader {
         left: 358px;
-        top: 42px;
+        top: 36px;
         background: #f4dcab;
         border-color: rgba(230, 169, 61, 0.72);
       }
 
       .service-node.verify {
         left: 512px;
-        top: 42px;
+        top: 36px;
       }
 
       .service-node.distribute {
         left: 666px;
-        top: 42px;
+        top: 36px;
         background: #d6f0e5;
         border-color: rgba(32, 201, 151, 0.58);
       }
 
       .service-node.analytics {
         left: 142px;
-        bottom: 34px;
+        bottom: 24px;
         background: #d7eadf;
         border-color: rgba(32, 201, 151, 0.58);
       }
 
       .service-node.reports {
         left: 310px;
-        bottom: 34px;
+        bottom: 24px;
         background: #cfe4d8;
         border-color: rgba(32, 201, 151, 0.64);
       }
 
       .service-node.portal {
         right: 322px;
-        bottom: 34px;
+        bottom: 24px;
         background: #efd4b3;
         border-color: rgba(230, 169, 61, 0.62);
       }
 
       .service-node.appeals {
         right: 166px;
-        bottom: 34px;
+        bottom: 24px;
         background: #f5c8c2;
         border-color: rgba(224, 100, 85, 0.62);
       }
 
       .service-node.audit {
         right: 36px;
-        bottom: 34px;
+        bottom: 24px;
         width: 112px;
         background: #f2e5c9;
         border-color: rgba(230, 169, 61, 0.5);
@@ -1479,7 +1483,7 @@
           transform: translateY(0);
         }
         50% {
-          transform: translateY(-4px);
+          transform: translateY(-2px);
         }
       }
 
@@ -2743,29 +2747,29 @@
                       <path d="M0 0 L10 5 L0 10 Z" fill="rgba(224, 100, 85, 0.66)" />
                     </marker>
                   </defs>
-                  <path marker-end="url(#solutionArrow)" d="M186 70 H204" />
-                  <path marker-end="url(#solutionArrow)" d="M340 70 H358" />
-                  <path marker-end="url(#solutionArrow)" d="M494 70 H512" />
-                  <path marker-end="url(#solutionArrow)" d="M648 70 H666" />
+                  <path marker-end="url(#solutionArrow)" d="M186 64 H204" />
+                  <path marker-end="url(#solutionArrow)" d="M340 64 H358" />
+                  <path marker-end="url(#solutionArrow)" d="M494 64 H512" />
+                  <path marker-end="url(#solutionArrow)" d="M648 64 H666" />
                   <path
                     class="branch"
                     marker-end="url(#solutionArrowGreen)"
-                    d="M734 96 V139 H278"
+                    d="M734 91 V151 H278"
                   />
                   <path
                     class="branch"
                     marker-end="url(#solutionArrowGreen)"
-                    d="M278 139 H310"
+                    d="M278 151 H310"
                   />
                   <path
                     class="appeal"
                     marker-end="url(#solutionArrowRed)"
-                    d="M782 96 V139 H830"
+                    d="M782 91 V151 H830"
                   />
                   <path
                     class="appeal"
                     marker-end="url(#solutionArrowRed)"
-                    d="M966 165 H986"
+                    d="M966 154 H986"
                   />
                 </svg>
                 <div class="service-node intake" style="--d: 0s">
