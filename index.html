@@ -1,1804 +1,2655 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AEGAS - Business Pitch</title>
-<style>
-  :root {
-    --bg: #111111;
-    --panel: #1b1b1b;
-    --panel-2: #242424;
-    --line: #343434;
-    --line-2: #444;
-    --text: #f4f0e8;
-    --muted: #b7afa3;
-    --soft: #877f73;
-    --green: #20c997;
-    --amber: #e6a93d;
-    --red: #e06455;
-    --cream: #fbf3df;
-    --ink: #161616;
-    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  * { box-sizing: border-box; }
-
-  html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: var(--bg);
-    color: var(--text);
-    font-family: "Aptos", "SF Pro Display", "Helvetica Neue", sans-serif;
-  }
-
-  button { font: inherit; }
-
-  .app {
-    width: 100vw;
-    height: 100vh;
-    display: grid;
-    grid-template-columns: 238px 1fr;
-    background:
-      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px),
-      linear-gradient(0deg, rgba(255,255,255,0.018) 1px, transparent 1px),
-      var(--bg);
-    background-size: 48px 48px;
-    transition: grid-template-columns 180ms ease;
-  }
-
-  .app.nav-collapsed {
-    grid-template-columns: 0 1fr;
-  }
-
-  .nav {
-    border-right: 1px solid var(--line);
-    background: #151515;
-    padding: 22px 16px;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-    overflow: hidden;
-    transition: transform 180ms ease, opacity 140ms ease, visibility 140ms ease;
-  }
-
-  .app.nav-collapsed .nav {
-    transform: translateX(-100%);
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .brand {
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 18px;
-  }
-
-  .brand strong {
-    display: block;
-    font-size: 22px;
-    letter-spacing: .02em;
-  }
-
-  .brand span {
-    display: block;
-    color: var(--muted);
-    font-size: 13px;
-    margin-top: 5px;
-    line-height: 1.35;
-  }
-
-  .nav-list {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    overflow: auto;
-  }
-
-  .nav-item {
-    width: 100%;
-    border: 0;
-    border-left: 2px solid transparent;
-    background: transparent;
-    color: var(--muted);
-    text-align: left;
-    padding: 9px 9px 9px 11px;
-    cursor: pointer;
-    display: grid;
-    grid-template-columns: 25px 1fr;
-    gap: 8px;
-    align-items: start;
-    font-size: 13px;
-    line-height: 1.25;
-  }
-
-  .nav-item:hover { background: #202020; color: var(--text); }
-  .nav-item.active {
-    background: #222;
-    color: var(--text);
-    border-left-color: var(--amber);
-  }
-
-  .nav-item .num { color: var(--soft); }
-  .nav-item.active .num { color: var(--amber); }
-
-  .stage {
-    min-width: 0;
-    display: grid;
-    place-items: center;
-    position: relative;
-    overflow: auto;
-  }
-
-  .progress {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 3px;
-    width: 0;
-    background: var(--amber);
-    z-index: 5;
-    transition: width .18s ease;
-  }
-
-  .controls {
-    position: absolute;
-    top: 16px;
-    right: 18px;
-    display: flex;
-    gap: 8px;
-    z-index: 6;
-  }
-
-  .control {
-    min-width: 34px;
-    height: 34px;
-    padding: 0 10px;
-    border: 1px solid var(--line-2);
-    background: #1a1a1a;
-    color: var(--text);
-    cursor: pointer;
-    border-radius: 6px;
-  }
-
-  .counter {
-    position: absolute;
-    top: 16px;
-    left: 18px;
-    z-index: 6;
-    color: var(--muted);
-    background: #1a1a1a;
-    border: 1px solid var(--line);
-    padding: 8px 10px;
-    border-radius: 6px;
-    font-size: 13px;
-  }
-
-  .deck {
-    width: 1280px;
-    height: 720px;
-    position: relative;
-    transform-origin: center;
-    flex: 0 0 auto;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
-    display: none;
-    flex-direction: column;
-    gap: 20px;
-    padding: 54px 64px 34px;
-    background:
-      linear-gradient(180deg, rgba(230,169,61,.08), transparent 28%),
-      var(--bg);
-    overflow: hidden;
-  }
-
-  .slide.active {
-    display: flex;
-    animation: enter .28s var(--ease-out-quint);
-  }
-
-  @keyframes enter {
-    from { opacity: .15; transform: translateY(7px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .slide-head {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 24px;
-    align-items: end;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 18px;
-  }
-
-  .slide.active .slide-head,
-  .slide.active .panel,
-  .slide.active .step,
-  .slide.active .person,
-  .slide.active .metric,
-  .slide.active .figure,
-  .slide.active .compare tr {
-    animation: rise-in .52s var(--ease-out-expo) both;
-  }
-
-  .slide.active .slide-head { animation-delay: .03s; }
-  .slide.active .panel:nth-child(1),
-  .slide.active .step:nth-child(1),
-  .slide.active .person:nth-child(1),
-  .slide.active .metric:nth-child(1),
-  .slide.active .compare tr:nth-child(1) { animation-delay: .08s; }
-  .slide.active .panel:nth-child(2),
-  .slide.active .step:nth-child(2),
-  .slide.active .person:nth-child(2),
-  .slide.active .metric:nth-child(2),
-  .slide.active .compare tr:nth-child(2) { animation-delay: .14s; }
-  .slide.active .panel:nth-child(3),
-  .slide.active .step:nth-child(3),
-  .slide.active .person:nth-child(3),
-  .slide.active .metric:nth-child(3),
-  .slide.active .compare tr:nth-child(3) { animation-delay: .20s; }
-  .slide.active .panel:nth-child(4),
-  .slide.active .step:nth-child(4),
-  .slide.active .person:nth-child(4),
-  .slide.active .compare tr:nth-child(4) { animation-delay: .26s; }
-  .slide.active .step:nth-child(5),
-  .slide.active .person:nth-child(5),
-  .slide.active .compare tr:nth-child(5) { animation-delay: .32s; }
-  .slide.active .person:nth-child(6) { animation-delay: .38s; }
-
-  @keyframes rise-in {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  h1, h2, h3, p { margin: 0; }
-
-  h1 {
-    font-size: 80px;
-    line-height: .92;
-    letter-spacing: -.04em;
-    font-weight: 760;
-  }
-
-  h2 {
-    font-size: 42px;
-    line-height: 1.02;
-    letter-spacing: -.025em;
-    font-weight: 720;
-    max-width: 890px;
-  }
-
-  .section-title {
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.35;
-    max-width: 310px;
-  }
-
-  .subhead {
-    color: var(--muted);
-    font-size: 23px;
-    line-height: 1.35;
-    max-width: 850px;
-  }
-
-  .content {
-    min-height: 0;
-    flex: 1;
-    display: grid;
-    gap: 18px;
-  }
-
-  .grid-2 { grid-template-columns: 1fr 1fr; }
-  .grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .grid-4 { grid-template-columns: repeat(4, 1fr); }
-  .wide-left { grid-template-columns: 1.16fr .84fr; }
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 22px;
-    min-width: 0;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .panel::after,
-  .step::after,
-  .person::after,
-  .metric::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(115deg, transparent 0%, rgba(255,255,255,.07) 42%, transparent 68%);
-    transform: translateX(-120%);
-    opacity: 0;
-  }
-
-  .slide.active .panel::after,
-  .slide.active .step::after,
-  .slide.active .person::after,
-  .slide.active .metric::after {
-    animation: sweep 1.15s var(--ease-out-quint) .28s both;
-  }
-
-  @keyframes sweep {
-    0% { opacity: 0; transform: translateX(-120%); }
-    18% { opacity: 1; }
-    100% { opacity: 0; transform: translateX(120%); }
-  }
-
-  .panel.alt { background: var(--cream); color: var(--ink); border-color: #d8ceb8; }
-  .panel.alt .muted, .panel.alt p, .panel.alt li { color: #554d42; }
-
-  .panel h3 {
-    font-size: 24px;
-    line-height: 1.08;
-    letter-spacing: -.015em;
-    margin-bottom: 13px;
-  }
-
-  .panel p, li {
-    font-size: 18px;
-    line-height: 1.38;
-    color: var(--muted);
-  }
-
-  ul {
-    margin: 0;
-    padding-left: 20px;
-  }
-
-  li + li { margin-top: 8px; }
-
-  .big-line {
-    font-size: 35px;
-    line-height: 1.1;
-    letter-spacing: -.025em;
-    font-weight: 720;
-  }
-
-  .cover {
-    display: grid;
-    grid-template-columns: .98fr 1.02fr;
-    gap: 42px;
-    align-items: stretch;
-  }
-
-  .cover-copy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 0;
-    position: relative;
-    text-align: center;
-    align-items: center;
-  }
-
-  .cover-main {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    transform: translateY(-8px);
-  }
-
-  .cover-title span {
-    display: block;
-    color: var(--amber);
-  }
-
-  .cover-meta {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    border-top: 1px solid var(--line);
-    padding-top: 22px;
-    color: var(--muted);
-    font-size: 18px;
-    line-height: 1.5;
-    text-align: left;
-  }
-
-  .workflow {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
-    align-items: stretch;
-  }
-
-  .step {
-    background: #202020;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 150px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .workflow .step:not(:last-child)::before,
-  .journey .step:not(:last-child)::before {
-    content: "";
-    position: absolute;
-    right: -10px;
-    top: 48px;
-    width: 20px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--amber), transparent);
-    z-index: 2;
-  }
-
-  .slide.active .workflow .step:not(:last-child)::before,
-  .slide.active .journey .step:not(:last-child)::before {
-    animation: line-pulse 1.4s linear infinite;
-  }
-
-  @keyframes line-pulse {
-    0% { opacity: .28; transform: scaleX(.45); transform-origin: left; }
-    45%, 70% { opacity: 1; transform: scaleX(1); transform-origin: left; }
-    100% { opacity: .28; transform: scaleX(.45); transform-origin: right; }
-  }
-
-  .step b { font-size: 18px; line-height: 1.1; }
-  .step span { color: var(--muted); font-size: 15px; line-height: 1.3; }
-
-  .number {
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    background: var(--amber);
-    color: #1a1305;
-    display: grid;
-    place-items: center;
-    font-weight: 760;
-  }
-
-  .team-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-
-  .person {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 18px;
-    min-height: 132px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .role {
-    color: var(--amber);
-    font-weight: 760;
-    font-size: 15px;
-    margin-bottom: 12px;
-  }
-
-  .person strong {
-    display: block;
-    font-size: 23px;
-    letter-spacing: -.015em;
-    margin-bottom: 6px;
-  }
-
-  .person span {
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  .compare {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 15.5px;
-  }
-
-  .compare th, .compare td {
-    border-bottom: 1px solid var(--line);
-    padding: 8px 12px;
-    text-align: left;
-    vertical-align: top;
-  }
-
-  .compare th {
-    color: var(--text);
-    font-size: 15px;
-    background: #202020;
-  }
-
-  .compare td { color: var(--muted); line-height: 1.35; }
-  .compare .aegas { color: var(--cream); font-weight: 690; }
-
-  .compare tr { position: relative; }
-
-  .journey {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 11px;
-  }
-
-  .journey .step {
-    min-height: 315px;
-    justify-content: flex-start;
-  }
-
-  .metric-strip {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-
-  .metric {
-    border-top: 4px solid var(--green);
-    background: var(--panel);
-    border-radius: 8px;
-    padding: 20px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .metric::before {
-    content: "";
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 18px;
-    height: 3px;
-    background: rgba(255,255,255,.08);
-  }
-
-  .metric strong,
-  .metric span { position: relative; z-index: 1; }
-
-  .slide.active .metric::before {
-    animation: bar-fill 1.05s var(--ease-out-expo) .35s both;
-    transform-origin: left;
-  }
-
-  @keyframes bar-fill {
-    from { transform: scaleX(.08); background: rgba(255,255,255,.08); }
-    to { transform: scaleX(1); background: rgba(230,169,61,.55); }
-  }
-
-  .figure {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    position: relative;
-    overflow: hidden;
-    min-height: 0;
-  }
-
-  .visual-grid {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
-      linear-gradient(0deg, rgba(255,255,255,.028) 1px, transparent 1px);
-    background-size: 32px 32px;
-    opacity: .55;
-  }
-
-  .flow-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .flow-path {
-    fill: none;
-    stroke: rgba(230,169,61,.54);
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-dasharray: 10 12;
-  }
-
-  .flow-path.secondary {
-    stroke: rgba(32,201,151,.42);
-    stroke-width: 2;
-    stroke-dasharray: 5 10;
-  }
-
-  .slide.active .flow-path {
-    animation: dash-run 1.8s linear infinite;
-  }
-
-  @keyframes dash-run {
-    to { stroke-dashoffset: -44; }
-  }
-
-  .route-dot {
-    position: absolute;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--amber);
-    box-shadow: 0 0 0 6px rgba(230,169,61,.14), 0 0 20px rgba(230,169,61,.55);
-    left: 0;
-    top: 0;
-    offset-rotate: 0deg;
-    z-index: 3;
-  }
-
-  .slide.active .cover-figure .route-dot {
-    offset-path: path("M132 130 C185 170 250 230 335 278 C430 220 560 130 686 130 C735 190 725 292 670 335");
-    animation: dot-travel 4.8s var(--ease-out-quint) infinite;
-  }
-
-  @keyframes dot-travel {
-    0% { offset-distance: 0%; opacity: 0; transform: scale(.8); }
-    8%, 88% { opacity: 1; transform: scale(1); }
-    100% { offset-distance: 100%; opacity: 0; }
-  }
-
-  .cover-figure {
-    min-height: 100%;
-    background:
-      radial-gradient(circle at 75% 20%, rgba(230,169,61,.24), transparent 24%),
-      #181818;
-  }
-
-  .mini-card {
-    position: absolute;
-    width: 180px;
-    padding: 14px;
-    border: 1px solid var(--line-2);
-    background: #202020;
-    border-radius: 8px;
-    z-index: 2;
-  }
-
-  .slide.active .mini-card {
-    animation: card-check 4.8s var(--ease-out-quint) infinite;
-  }
-
-  .slide.active .mini-card.ai { animation-delay: .95s; }
-  .slide.active .mini-card.report { animation-delay: 2.1s; }
-  .slide.active .mini-card.appeal { animation-delay: 3.25s; }
-
-  @keyframes card-check {
-    0%, 18%, 100% { border-color: var(--line-2); background: #202020; }
-    7%, 13% { border-color: var(--amber); background: #2a2518; }
-  }
-
-  .mini-card b {
-    display: block;
-    color: var(--text);
-    font-size: 17px;
-    margin-bottom: 6px;
-  }
-
-  .mini-card span {
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 1.25;
-  }
-
-  .mini-card.exam { left: 42px; top: 64px; }
-  .mini-card.ai { left: 245px; top: 224px; }
-  .mini-card.report { right: 44px; top: 72px; }
-  .mini-card.appeal { right: 60px; bottom: 54px; }
-
-  .paper-stack {
-    position: absolute;
-    left: 65px;
-    bottom: 70px;
-    width: 148px;
-    height: 116px;
-  }
-
-  .paper-stack i {
-    position: absolute;
-    inset: 0;
-    background: var(--cream);
-    border: 1px solid #d8ceb8;
-    border-radius: 5px;
-    transform: rotate(var(--r)) translate(var(--x), var(--y));
-  }
-
-  .paper-stack i::before,
-  .paper-stack i::after {
-    content: "";
-    position: absolute;
-    left: 18px;
-    right: 18px;
-    height: 2px;
-    background: #9c927f;
-  }
-
-  .paper-stack i::before { top: 34px; }
-  .paper-stack i::after { top: 56px; }
-
-  .slide.active .paper-stack i {
-    animation: paper-float 3.8s ease-in-out infinite;
-  }
-
-  @keyframes paper-float {
-    0%, 100% { translate: 0 0; }
-    50% { translate: 0 -8px; }
-  }
-
-  .problem-figure {
-    display: grid;
-    place-items: center;
-    min-height: 250px;
-  }
-
-  .pressure-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .pressure-svg path {
-    fill: none;
-    stroke: rgba(224,100,85,.55);
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-dasharray: 8 10;
-  }
-
-  .slide.active .pressure-svg path {
-    animation: dash-run 1.6s linear infinite;
-  }
-
-  .pressure-ring {
-    width: 238px;
-    height: 238px;
-    border-radius: 50%;
-    border: 2px solid rgba(230,169,61,.45);
-    display: grid;
-    place-items: center;
-    position: relative;
-  }
-
-  .pressure-ring::before,
-  .pressure-ring::after {
-    content: "";
-    position: absolute;
-    inset: 26px;
-    border-radius: 50%;
-    border: 1px dashed rgba(230,169,61,.35);
-  }
-
-  .pressure-ring::after {
-    inset: 54px;
-    border-color: rgba(224,100,85,.55);
-  }
-
-  .slide.active .pressure-ring::before { animation: spin 18s linear infinite; }
-  .slide.active .pressure-ring::after { animation: spin 10s linear infinite reverse; }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .pressure-ring strong {
-    width: 118px;
-    height: 118px;
-    border-radius: 50%;
-    background: var(--cream);
-    color: var(--ink);
-    display: grid;
-    place-items: center;
-    text-align: center;
-    font-size: 20px;
-    line-height: 1.05;
-    padding: 16px;
-  }
-
-  .node-label {
-    position: absolute;
-    background: #202020;
-    border: 1px solid var(--line-2);
-    border-radius: 6px;
-    padding: 8px 10px;
-    color: var(--muted);
-    font-size: 13px;
-  }
-
-  .node-label.one { top: 16px; left: 26px; }
-  .node-label.two { right: 10px; top: 118px; }
-  .node-label.three { bottom: 22px; left: 32px; }
-
-  .org-map {
-    grid-column: span 3;
-    min-height: 122px;
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 8px;
-    padding: 16px;
-    align-items: center;
-  }
-
-  .org-map::before {
-    content: "";
-    position: absolute;
-    left: 8%;
-    right: 8%;
-    top: 50%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(230,169,61,.75), transparent);
-  }
-
-  .slide.active .org-map::before { animation: scan-line 2.1s linear infinite; }
-
-  @keyframes scan-line {
-    0% { transform: scaleX(.2); opacity: .25; }
-    50% { transform: scaleX(1); opacity: 1; }
-    100% { transform: scaleX(.2); opacity: .25; }
-  }
-
-  .org-node {
-    position: relative;
-    z-index: 1;
-    background: #202020;
-    border: 1px solid var(--line-2);
-    border-radius: 8px;
-    padding: 10px;
-    text-align: center;
-    color: var(--text);
-    font-size: 13px;
-  }
-
-  .persona-map {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    padding: 18px;
-  }
-
-  .persona-map .bubble {
-    border: 1px solid var(--line-2);
-    background: #202020;
-    border-radius: 8px;
-    padding: 13px;
-    color: var(--muted);
-    font-size: 15px;
-    line-height: 1.25;
-  }
-
-  .persona-map .bubble.main {
-    grid-column: span 2;
-    background: var(--cream);
-    color: var(--ink);
-    font-size: 22px;
-    font-weight: 720;
-    text-align: center;
-  }
-
-  .value-flow {
-    min-height: 122px;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 12px;
-    padding: 18px;
-  }
-
-  .value-flow-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .value-flow-svg path {
-    fill: none;
-    stroke: rgba(230,169,61,.58);
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-dasharray: 9 12;
-  }
-
-  .slide.active .value-flow-svg path {
-    animation: dash-run 1.25s linear infinite;
-  }
-
-  .value-flow .route-dot {
-    width: 12px;
-    height: 12px;
-    box-shadow: 0 0 0 5px rgba(230,169,61,.12), 0 0 16px rgba(230,169,61,.5);
-    top: calc(50% - 6px);
-    left: 13%;
-  }
-
-  .slide.active .value-flow .route-dot {
-    animation: value-dot 3s var(--ease-out-quint) infinite;
-  }
-
-  @keyframes value-dot {
-    0% { left: 13%; transform: scale(.8); opacity: 0; }
-    10%, 88% { opacity: 1; }
-    50% { left: 50%; transform: scale(1); }
-    100% { left: 87%; transform: scale(.8); opacity: 0; }
-  }
-
-  .value-pill {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    border-radius: 8px;
-    border: 1px solid var(--line-2);
-    background: #202020;
-    color: var(--text);
-    font-size: 18px;
-    line-height: 1.1;
-    padding: 10px;
-  }
-
-  .value-flow::before {
-    content: "";
-    position: absolute;
-    top: 50%;
-    left: 13%;
-    right: 13%;
-    height: 2px;
-    background: repeating-linear-gradient(90deg, var(--amber) 0 12px, transparent 12px 22px);
-    opacity: .65;
-  }
-
-  .slide.active .value-flow::before { animation: dash-run 1.2s linear infinite; }
-
-  .position-map {
-    min-height: 205px;
-    padding: 20px;
-  }
-
-  .quadrant {
-    position: absolute;
-    border: 1px solid rgba(255,255,255,.06);
-    background: rgba(255,255,255,.025);
-  }
-
-  .quadrant.q1 { left: 43px; top: 28px; right: 32px; height: 66px; background: rgba(32,201,151,.06); }
-  .quadrant.q2 { left: 43px; bottom: 45px; right: 32px; height: 66px; background: rgba(230,169,61,.045); }
-
-  .axis {
-    position: absolute;
-    background: rgba(255,255,255,.16);
-  }
-
-  .axis.x { left: 42px; right: 32px; bottom: 44px; height: 1px; }
-  .axis.y { left: 42px; top: 28px; bottom: 44px; width: 1px; }
-
-  .axis-label {
-    position: absolute;
-    color: var(--soft);
-    font-size: 12px;
-  }
-
-  .axis-label.right { right: 30px; bottom: 19px; }
-  .axis-label.top { left: 18px; top: 16px; transform: rotate(-90deg); transform-origin: left top; }
-
-  .plot {
-    position: absolute;
-    width: 112px;
-    padding: 9px;
-    border-radius: 7px;
-    border: 1px solid var(--line-2);
-    background: #202020;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.15;
-  }
-
-  .plot.aegas {
-    width: 138px;
-    background: var(--cream);
-    color: var(--ink);
-    font-weight: 760;
-    right: 44px;
-    top: 35px;
-  }
-
-  .plot::before {
-    content: "";
-    position: absolute;
-    left: -18px;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--soft);
-    transform: translateY(-50%);
-  }
-
-  .plot.aegas::before {
-    background: var(--green);
-    box-shadow: 0 0 0 6px rgba(32,201,151,.14);
-  }
-
-  .plot.lms { left: 72px; bottom: 60px; }
-  .plot.grade { left: 210px; top: 93px; }
-  .plot.ai-prompt { right: 86px; bottom: 62px; }
-
-  .slide.active .plot.aegas { animation: emphasis-pop 1.6s var(--ease-out-expo) .55s both; }
-
-  .slide[data-title="Competitors"] {
-    gap: 14px;
-  }
-
-  .slide[data-title="Competitors"] .slide-head {
-    padding-bottom: 14px;
-  }
-
-  .slide[data-title="Competitors"] h2 {
-    font-size: 38px;
-  }
-
-  .slide[data-title="Competitors"] .content {
-    gap: 12px;
-  }
-
-  .slide[data-title="Competitors"] .position-map {
-    min-height: 176px;
-  }
-
-  .slide[data-title="Competitors"] .compare {
-    font-size: 14px;
-  }
-
-  .slide[data-title="Competitors"] .compare th,
-  .slide[data-title="Competitors"] .compare td {
-    padding: 5px 12px;
-    line-height: 1.22;
-  }
-
-  .slide[data-title="Problem"] .panel p {
-    font-size: 17px;
-    line-height: 1.28;
-  }
-
-  .slide[data-title="Problem"] .big-line {
-    font-size: 32px;
-    line-height: 1.12;
-  }
-
-  .problem-statement {
-    background: #241f16;
-    border-color: rgba(230,169,61,.55);
-    display: flex;
-    align-items: center;
-    min-height: 250px;
-  }
-
-  .slide[data-title="Problem"] .problem-statement p {
-    color: var(--amber);
-    font-size: 38px;
-    line-height: 1.08;
-    letter-spacing: -.02em;
-  }
-
-  .slide[data-title="Customers"] .panel.alt {
-    padding: 20px;
-    background: #f5e2b6;
-    border-color: rgba(230,169,61,.7);
-  }
-
-  .slide[data-title="Customers"] .panel.alt h3 {
-    margin-bottom: 10px;
-    color: #7b4d00;
-  }
-
-  .slide[data-title="Customers"] .panel.alt li {
-    font-size: 16.5px;
-    line-height: 1.24;
-    color: #45351b;
-  }
-
-  .slide[data-title="Customers"] .panel.alt li + li {
-    margin-top: 6px;
-  }
-
-  .slide[data-title="Customers"] .panel:not(.alt) {
-    background: #16251f;
-    border-color: rgba(32,201,151,.45);
-  }
-
-  .slide[data-title="Customers"] .panel:not(.alt) h3 {
-    color: var(--green);
-  }
-
-  .slide[data-title="Customers"] .persona-map {
-    background:
-      linear-gradient(135deg, rgba(32,201,151,.12), transparent 42%),
-      linear-gradient(315deg, rgba(230,169,61,.13), transparent 48%),
-      #1d1a16;
-    border-color: rgba(230,169,61,.35);
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble {
-    background: #211f1b;
-    border-color: rgba(230,169,61,.32);
-    color: #dbcaa8;
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble:nth-child(2) {
-    border-color: rgba(32,201,151,.45);
-    color: #b7eadb;
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble:nth-child(3) {
-    border-color: rgba(224,100,85,.5);
-    color: #f1c1ba;
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble:nth-child(4) {
-    border-color: rgba(230,169,61,.55);
-    color: #f2d59a;
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble:nth-child(5) {
-    border-color: rgba(32,201,151,.45);
-    color: #b7eadb;
-  }
-
-  .slide[data-title="Customers"] .persona-map .bubble.main {
-    background: var(--green);
-    color: #071c15;
-    border-color: transparent;
-  }
-
-  .slide[data-title="Value"] .panel {
-    border-top: 4px solid var(--green);
-    background: #14241f;
-  }
-
-  .slide[data-title="Value"] .panel:nth-child(2) {
-    border-top-color: var(--amber);
-    background: #261f13;
-  }
-
-  .slide[data-title="Value"] .panel:nth-child(3) {
-    border-top-color: var(--red);
-    background: #281918;
-  }
-
-  .slide[data-title="Value"] .panel:nth-child(1) h3 { color: var(--green); }
-  .slide[data-title="Value"] .panel:nth-child(2) h3 { color: var(--amber); }
-  .slide[data-title="Value"] .panel:nth-child(3) h3 { color: #ff9c8f; }
-
-  .slide[data-title="Value"] .value-flow {
-    background:
-      linear-gradient(90deg, rgba(32,201,151,.12), rgba(230,169,61,.12), rgba(224,100,85,.12)),
-      #1a1a1a;
-    border-color: rgba(230,169,61,.35);
-  }
-
-  .slide[data-title="Value"] .value-pill:nth-of-type(2) {
-    background: #102820;
-    border-color: rgba(32,201,151,.6);
-    color: #b7eadb;
-  }
-
-  .slide[data-title="Value"] .value-pill:nth-of-type(3) {
-    background: #2b2111;
-    border-color: rgba(230,169,61,.65);
-    color: #f2d59a;
-  }
-
-  .slide[data-title="Value"] .value-pill:nth-of-type(4) {
-    background: #301917;
-    border-color: rgba(224,100,85,.65);
-    color: #f1c1ba;
-  }
-
-  @keyframes emphasis-pop {
-    0% { transform: scale(.92); }
-    45% { transform: scale(1.04); }
-    100% { transform: scale(1); }
-  }
-
-  .flywheel {
-    grid-column: span 4;
-    min-height: 138px;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    padding: 18px;
-  }
-
-  .flywheel-svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-  }
-
-  .flywheel-svg path {
-    fill: none;
-    stroke: rgba(230,169,61,.5);
-    stroke-width: 3;
-    stroke-linecap: round;
-    stroke-dasharray: 12 14;
-  }
-
-  .slide.active .flywheel-svg path {
-    animation: dash-run 1.7s linear infinite;
-  }
-
-  .flywheel-item {
-    background: #202020;
-    border: 1px solid var(--line-2);
-    border-radius: 8px;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    color: var(--text);
-    font-size: 17px;
-    line-height: 1.15;
-    padding: 12px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .flywheel-item:not(:last-child)::after {
-    content: "";
-    position: absolute;
-    right: -15px;
-    top: 50%;
-    width: 18px;
-    height: 2px;
-    background: var(--amber);
-    transform: translateY(-50%);
-    z-index: 3;
-  }
-
-  .flywheel-item:not(:last-child)::before {
-    content: "";
-    position: absolute;
-    right: -18px;
-    top: 50%;
-    width: 0;
-    height: 0;
-    border-top: 5px solid transparent;
-    border-bottom: 5px solid transparent;
-    border-left: 7px solid var(--amber);
-    transform: translateY(-50%);
-    z-index: 3;
-  }
-
-  .flywheel::before {
-    content: none;
-    position: absolute;
-    inset: 28px 80px;
-    border: 2px dashed rgba(230,169,61,.4);
-    border-radius: 50%;
-  }
-
-  .slide.active .flywheel::before { animation: spin 16s linear infinite; }
-
-  .canvas .panel::before {
-    content: "";
-    position: absolute;
-    left: 16px;
-    top: 12px;
-    width: 28px;
-    height: 3px;
-    border-radius: 2px;
-    background: var(--amber);
-  }
-
-  .metric:nth-child(2) { border-top-color: var(--amber); }
-  .metric:nth-child(3) { border-top-color: var(--red); }
-  .metric strong {
-    display: block;
-    font-size: 29px;
-    line-height: 1.05;
-    margin-bottom: 8px;
-  }
-  .metric span { color: var(--muted); font-size: 16px; line-height: 1.34; }
-
-  .footer {
-    color: var(--soft);
-    font-size: 13px;
-    display: flex;
-    justify-content: space-between;
-    border-top: 1px solid var(--line);
-    padding-top: 12px;
-  }
-
-  .canvas {
-    display: grid;
-    grid-template-columns: 1.05fr 1fr 1.16fr 1fr 1.05fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 10px;
-    height: 100%;
-  }
-
-  .canvas .panel {
-    padding: 16px;
-  }
-
-  .canvas .panel h3 { font-size: 19px; margin-bottom: 9px; }
-  .canvas .panel p, .canvas li { font-size: 14.5px; line-height: 1.28; }
-  .tall { grid-row: span 2; }
-  .center-value { background: var(--cream); color: var(--ink); }
-  .center-value p, .center-value li { color: #554d42; }
-
-  .qa {
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 26px;
-  }
-
-  .qa h2 { font-size: 82px; max-width: none; }
-  .qa p { color: var(--muted); font-size: 25px; }
-
-  @media (max-width: 900px) {
-    body { overflow: auto; }
-    .app { display: block; height: auto; min-height: 100vh; }
-    .nav { display: none; }
-    .stage { overflow: visible; padding: 0; display: block; }
-    .controls, .counter, .progress { display: none; }
-    .deck { width: 100%; height: auto; transform: none !important; }
-    .slide {
-      position: relative;
-      display: flex;
-      width: 100%;
-      height: auto;
-      min-height: 100vh;
-      padding: 28px 18px;
-      border-bottom: 1px solid var(--line);
-    }
-    .slide:not(.active) { display: flex; }
-    .slide-head, .cover, .content, .grid-2, .grid-3, .grid-4, .wide-left, .team-grid, .workflow, .journey, .metric-strip, .canvas {
-      grid-template-columns: 1fr;
-      height: auto;
-    }
-    .panel[style*="grid-column"] { grid-column: auto !important; }
-    .figure[style*="grid-column"],
-    .org-map,
-    .persona-map,
-    .flywheel,
-    .value-flow { grid-column: auto !important; }
-    .value-flow,
-    .flywheel,
-    .org-map,
-    .persona-map { grid-template-columns: 1fr; }
-    .tall, .center-value { grid-row: auto; }
-    h1, .qa h2 { font-size: 56px; }
-    h2 { font-size: 32px; }
-    .section-title { max-width: none; }
-    .cover-copy { align-items: stretch; text-align: left; }
-    .cover-main { align-items: flex-start; transform: none; }
-    .cover-meta { position: static; margin-top: 28px; }
-  }
-
-  @media print {
-    @page { size: 13.333in 7.5in; margin: 0; }
-    html, body { overflow: visible; background: var(--bg); }
-    .app { display: block; width: auto; height: auto; background: var(--bg); }
-    .nav, .controls, .counter, .progress { display: none; }
-    .stage { display: block; overflow: visible; }
-    .deck { width: 1280px; height: auto; transform: none !important; }
-    .slide {
-      position: relative;
-      display: flex !important;
-      width: 1280px;
-      height: 720px;
-      page-break-after: always;
-      break-after: page;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: .001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: .001ms !important;
-      scroll-behavior: auto !important;
-    }
-  }
-</style>
-</head>
-<body>
-  <main class="app" id="app">
-    <aside class="nav">
-      <div class="brand">
-        <strong>AEGAS</strong>
-      </div>
-      <div class="nav-list" id="navList"></div>
-    </aside>
-
-    <section class="stage">
-      <div class="progress" id="progress"></div>
-      <div class="counter" id="counter">1 / 11</div>
-      <div class="controls" aria-label="Slide controls">
-        <button class="control" id="toggleNav" aria-label="Toggle sidebar" title="Toggle sidebar (S)">Nav</button>
-        <button class="control" id="toggleFullscreen" aria-label="Toggle fullscreen" title="Fullscreen (F)">Full</button>
-        <button class="control" id="prev" aria-label="Previous slide">&lsaquo;</button>
-        <button class="control" id="next" aria-label="Next slide">&rsaquo;</button>
-      </div>
-
-      <div class="deck" id="deck">
-        <section class="slide active" data-title="Pitch">
-          <div class="cover content">
-            <div class="cover-copy">
-              <div class="cover-main">
-                <h1 class="cover-title">AEGAS <span>for universities</span></h1>
-                <p class="subhead" style="margin-top: 26px;">Human-in-the-Loop AI grading and accreditation-ready reporting for handwritten exams.</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AEGAS - Business Pitch</title>
+    <style>
+      :root {
+        --bg: #111111;
+        --panel: #1b1b1b;
+        --panel-2: #242424;
+        --line: #343434;
+        --line-2: #444;
+        --text: #f4f0e8;
+        --muted: #b7afa3;
+        --soft: #877f73;
+        --green: #20c997;
+        --amber: #e6a93d;
+        --red: #e06455;
+        --cream: #fbf3df;
+        --ink: #161616;
+        --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+        --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Aptos", "SF Pro Display", "Helvetica Neue", sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .app {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        grid-template-columns: 238px 1fr;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.025) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.018) 1px,
+            transparent 1px
+          ),
+          var(--bg);
+        background-size: 48px 48px;
+        transition: grid-template-columns 180ms ease;
+      }
+
+      .app.nav-collapsed {
+        grid-template-columns: 0 1fr;
+      }
+
+      .nav {
+        border-right: 1px solid var(--line);
+        background: #151515;
+        padding: 22px 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+        overflow: hidden;
+        transition:
+          transform 180ms ease,
+          opacity 140ms ease,
+          visibility 140ms ease;
+      }
+
+      .app.nav-collapsed .nav {
+        transform: translateX(-100%);
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      .brand {
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 18px;
+      }
+
+      .brand strong {
+        display: block;
+        font-size: 22px;
+        letter-spacing: 0.02em;
+      }
+
+      .brand span {
+        display: block;
+        color: var(--muted);
+        font-size: 13px;
+        margin-top: 5px;
+        line-height: 1.35;
+      }
+
+      .nav-list {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        overflow: auto;
+      }
+
+      .nav-item {
+        width: 100%;
+        border: 0;
+        border-left: 2px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        text-align: left;
+        padding: 9px 9px 9px 11px;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 25px 1fr;
+        gap: 8px;
+        align-items: start;
+        font-size: 13px;
+        line-height: 1.25;
+      }
+
+      .nav-item:hover {
+        background: #202020;
+        color: var(--text);
+      }
+      .nav-item.active {
+        background: #222;
+        color: var(--text);
+        border-left-color: var(--amber);
+      }
+
+      .nav-item .num {
+        color: var(--soft);
+      }
+      .nav-item.active .num {
+        color: var(--amber);
+      }
+
+      .stage {
+        min-width: 0;
+        display: grid;
+        place-items: center;
+        position: relative;
+        overflow: auto;
+      }
+
+      .progress {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 3px;
+        width: 0;
+        background: var(--amber);
+        z-index: 5;
+        transition: width 0.18s ease;
+      }
+
+      .controls {
+        position: absolute;
+        top: 16px;
+        right: 18px;
+        display: flex;
+        gap: 8px;
+        z-index: 6;
+      }
+
+      .control {
+        min-width: 34px;
+        height: 34px;
+        padding: 0 10px;
+        border: 1px solid var(--line-2);
+        background: #1a1a1a;
+        color: var(--text);
+        cursor: pointer;
+        border-radius: 6px;
+      }
+
+      .counter {
+        position: absolute;
+        top: 16px;
+        left: 18px;
+        z-index: 6;
+        color: var(--muted);
+        background: #1a1a1a;
+        border: 1px solid var(--line);
+        padding: 8px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+      }
+
+      .deck {
+        width: 1280px;
+        height: 720px;
+        position: relative;
+        transform-origin: center;
+        flex: 0 0 auto;
+      }
+
+      .slide {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        padding: 54px 64px 34px;
+        background:
+          linear-gradient(180deg, rgba(230, 169, 61, 0.08), transparent 28%),
+          var(--bg);
+        overflow: hidden;
+      }
+
+      .slide.active {
+        display: flex;
+        animation: enter 0.28s var(--ease-out-quint);
+      }
+
+      @keyframes enter {
+        from {
+          opacity: 0.15;
+          transform: translateY(7px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .slide-head {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 24px;
+        align-items: end;
+        border-bottom: 1px solid var(--line);
+        padding-bottom: 18px;
+      }
+
+      .slide.active .slide-head,
+      .slide.active .panel,
+      .slide.active .step,
+      .slide.active .person,
+      .slide.active .metric,
+      .slide.active .figure,
+      .slide.active .compare tr {
+        animation: rise-in 0.52s var(--ease-out-expo) both;
+      }
+
+      .slide.active .slide-head {
+        animation-delay: 0.03s;
+      }
+      .slide.active .panel:nth-child(1),
+      .slide.active .step:nth-child(1),
+      .slide.active .person:nth-child(1),
+      .slide.active .metric:nth-child(1),
+      .slide.active .compare tr:nth-child(1) {
+        animation-delay: 0.08s;
+      }
+      .slide.active .panel:nth-child(2),
+      .slide.active .step:nth-child(2),
+      .slide.active .person:nth-child(2),
+      .slide.active .metric:nth-child(2),
+      .slide.active .compare tr:nth-child(2) {
+        animation-delay: 0.14s;
+      }
+      .slide.active .panel:nth-child(3),
+      .slide.active .step:nth-child(3),
+      .slide.active .person:nth-child(3),
+      .slide.active .metric:nth-child(3),
+      .slide.active .compare tr:nth-child(3) {
+        animation-delay: 0.2s;
+      }
+      .slide.active .panel:nth-child(4),
+      .slide.active .step:nth-child(4),
+      .slide.active .person:nth-child(4),
+      .slide.active .compare tr:nth-child(4) {
+        animation-delay: 0.26s;
+      }
+      .slide.active .step:nth-child(5),
+      .slide.active .person:nth-child(5),
+      .slide.active .compare tr:nth-child(5) {
+        animation-delay: 0.32s;
+      }
+      .slide.active .person:nth-child(6) {
+        animation-delay: 0.38s;
+      }
+
+      @keyframes rise-in {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: 80px;
+        line-height: 0.92;
+        letter-spacing: -0.04em;
+        font-weight: 760;
+      }
+
+      h2 {
+        font-size: 42px;
+        line-height: 1.02;
+        letter-spacing: -0.025em;
+        font-weight: 720;
+        max-width: 890px;
+      }
+
+      .section-title {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.35;
+        max-width: 310px;
+      }
+
+      .subhead {
+        color: var(--muted);
+        font-size: 23px;
+        line-height: 1.35;
+        max-width: 850px;
+      }
+
+      .content {
+        min-height: 0;
+        flex: 1;
+        display: grid;
+        gap: 18px;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+      .grid-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .wide-left {
+        grid-template-columns: 1.16fr 0.84fr;
+      }
+
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 22px;
+        min-width: 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .panel::after,
+      .step::after,
+      .person::after,
+      .metric::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: linear-gradient(
+          115deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.07) 42%,
+          transparent 68%
+        );
+        transform: translateX(-120%);
+        opacity: 0;
+      }
+
+      .slide.active .panel::after,
+      .slide.active .step::after,
+      .slide.active .person::after,
+      .slide.active .metric::after {
+        animation: sweep 1.15s var(--ease-out-quint) 0.28s both;
+      }
+
+      @keyframes sweep {
+        0% {
+          opacity: 0;
+          transform: translateX(-120%);
+        }
+        18% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(120%);
+        }
+      }
+
+      .panel.alt {
+        background: var(--cream);
+        color: var(--ink);
+        border-color: #d8ceb8;
+      }
+      .panel.alt .muted,
+      .panel.alt p,
+      .panel.alt li {
+        color: #554d42;
+      }
+
+      .panel h3 {
+        font-size: 24px;
+        line-height: 1.08;
+        letter-spacing: -0.015em;
+        margin-bottom: 13px;
+      }
+
+      .panel p,
+      li {
+        font-size: 18px;
+        line-height: 1.38;
+        color: var(--muted);
+      }
+
+      ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+
+      li + li {
+        margin-top: 8px;
+      }
+
+      .big-line {
+        font-size: 35px;
+        line-height: 1.1;
+        letter-spacing: -0.025em;
+        font-weight: 720;
+      }
+
+      .cover {
+        display: grid;
+        grid-template-columns: 0.98fr 1.02fr;
+        gap: 42px;
+        align-items: stretch;
+      }
+
+      .cover-copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        min-height: 0;
+        position: relative;
+        text-align: center;
+        align-items: center;
+      }
+
+      .cover-main {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        transform: translateY(-8px);
+      }
+
+      .cover-title span {
+        display: block;
+        color: var(--amber);
+      }
+
+      .cover-meta {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid var(--line);
+        padding-top: 22px;
+        color: var(--muted);
+        font-size: 18px;
+        line-height: 1.5;
+        text-align: left;
+      }
+
+      .workflow {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        align-items: stretch;
+      }
+
+      .step {
+        background: #202020;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        min-height: 150px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .workflow .step:not(:last-child)::before,
+      .journey .step:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        right: -10px;
+        top: 48px;
+        width: 20px;
+        height: 2px;
+        background: linear-gradient(90deg, var(--amber), transparent);
+        z-index: 2;
+      }
+
+      .slide.active .workflow .step:not(:last-child)::before,
+      .slide.active .journey .step:not(:last-child)::before {
+        animation: line-pulse 1.4s linear infinite;
+      }
+
+      @keyframes line-pulse {
+        0% {
+          opacity: 0.28;
+          transform: scaleX(0.45);
+          transform-origin: left;
+        }
+        45%,
+        70% {
+          opacity: 1;
+          transform: scaleX(1);
+          transform-origin: left;
+        }
+        100% {
+          opacity: 0.28;
+          transform: scaleX(0.45);
+          transform-origin: right;
+        }
+      }
+
+      .step b {
+        font-size: 18px;
+        line-height: 1.1;
+      }
+      .step span {
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.3;
+      }
+
+      .number {
+        width: 32px;
+        height: 32px;
+        border-radius: 6px;
+        background: var(--amber);
+        color: #1a1305;
+        display: grid;
+        place-items: center;
+        font-weight: 760;
+      }
+
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .person {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 18px;
+        min-height: 132px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .role {
+        color: var(--amber);
+        font-weight: 760;
+        font-size: 15px;
+        margin-bottom: 12px;
+      }
+
+      .person strong {
+        display: block;
+        font-size: 23px;
+        letter-spacing: -0.015em;
+        margin-bottom: 6px;
+      }
+
+      .person span {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .compare {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 15.5px;
+      }
+
+      .compare th,
+      .compare td {
+        border-bottom: 1px solid var(--line);
+        padding: 8px 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .compare th {
+        color: var(--text);
+        font-size: 15px;
+        background: #202020;
+      }
+
+      .compare td {
+        color: var(--muted);
+        line-height: 1.35;
+      }
+      .compare .aegas {
+        color: var(--cream);
+        font-weight: 690;
+      }
+
+      .compare tr {
+        position: relative;
+      }
+
+      .journey {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 11px;
+      }
+
+      .journey .step {
+        min-height: 315px;
+        justify-content: flex-start;
+      }
+
+      .metric-strip {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 14px;
+      }
+
+      .metric {
+        border-top: 4px solid var(--green);
+        background: var(--panel);
+        border-radius: 8px;
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        right: 20px;
+        bottom: 18px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .metric strong,
+      .metric span {
+        position: relative;
+        z-index: 1;
+      }
+
+      .slide.active .metric::before {
+        animation: bar-fill 1.05s var(--ease-out-expo) 0.35s both;
+        transform-origin: left;
+      }
+
+      @keyframes bar-fill {
+        from {
+          transform: scaleX(0.08);
+          background: rgba(255, 255, 255, 0.08);
+        }
+        to {
+          transform: scaleX(1);
+          background: rgba(230, 169, 61, 0.55);
+        }
+      }
+
+      .figure {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        position: relative;
+        overflow: hidden;
+        min-height: 0;
+      }
+
+      .visual-grid {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+          ),
+          linear-gradient(0deg, rgba(255, 255, 255, 0.028) 1px, transparent 1px);
+        background-size: 32px 32px;
+        opacity: 0.55;
+      }
+
+      .flow-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .flow-path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.54);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 10 12;
+      }
+
+      .flow-path.secondary {
+        stroke: rgba(32, 201, 151, 0.42);
+        stroke-width: 2;
+        stroke-dasharray: 5 10;
+      }
+
+      .slide.active .flow-path {
+        animation: dash-run 1.8s linear infinite;
+      }
+
+      @keyframes dash-run {
+        to {
+          stroke-dashoffset: -44;
+        }
+      }
+
+      .route-dot {
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: var(--amber);
+        box-shadow:
+          0 0 0 6px rgba(230, 169, 61, 0.14),
+          0 0 20px rgba(230, 169, 61, 0.55);
+        left: 0;
+        top: 0;
+        offset-rotate: 0deg;
+        z-index: 3;
+      }
+
+      .slide.active .cover-figure .route-dot {
+        offset-path: path(
+          "M132 130 C185 170 250 230 335 278 C430 220 560 130 686 130 C735 190 725 292 670 335"
+        );
+        animation: dot-travel 4.8s var(--ease-out-quint) infinite;
+      }
+
+      @keyframes dot-travel {
+        0% {
+          offset-distance: 0%;
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        8%,
+        88% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          offset-distance: 100%;
+          opacity: 0;
+        }
+      }
+
+      .cover-figure {
+        min-height: 100%;
+        background:
+          radial-gradient(
+            circle at 75% 20%,
+            rgba(230, 169, 61, 0.24),
+            transparent 24%
+          ),
+          #181818;
+      }
+
+      .mini-card {
+        position: absolute;
+        width: 180px;
+        padding: 14px;
+        border: 1px solid var(--line-2);
+        background: #202020;
+        border-radius: 8px;
+        z-index: 2;
+      }
+
+      .slide.active .mini-card {
+        animation: card-check 4.8s var(--ease-out-quint) infinite;
+      }
+
+      .slide.active .mini-card.ai {
+        animation-delay: 0.95s;
+      }
+      .slide.active .mini-card.report {
+        animation-delay: 2.1s;
+      }
+      .slide.active .mini-card.appeal {
+        animation-delay: 3.25s;
+      }
+
+      @keyframes card-check {
+        0%,
+        18%,
+        100% {
+          border-color: var(--line-2);
+          background: #202020;
+        }
+        7%,
+        13% {
+          border-color: var(--amber);
+          background: #2a2518;
+        }
+      }
+
+      .mini-card b {
+        display: block;
+        color: var(--text);
+        font-size: 17px;
+        margin-bottom: 6px;
+      }
+
+      .mini-card span {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.25;
+      }
+
+      .mini-card.exam {
+        left: 42px;
+        top: 64px;
+      }
+      .mini-card.ai {
+        left: 245px;
+        top: 224px;
+      }
+      .mini-card.report {
+        right: 44px;
+        top: 72px;
+      }
+      .mini-card.appeal {
+        right: 60px;
+        bottom: 54px;
+      }
+
+      .paper-stack {
+        position: absolute;
+        left: 65px;
+        bottom: 70px;
+        width: 148px;
+        height: 116px;
+      }
+
+      .paper-stack i {
+        position: absolute;
+        inset: 0;
+        background: var(--cream);
+        border: 1px solid #d8ceb8;
+        border-radius: 5px;
+        transform: rotate(var(--r)) translate(var(--x), var(--y));
+      }
+
+      .paper-stack i::before,
+      .paper-stack i::after {
+        content: "";
+        position: absolute;
+        left: 18px;
+        right: 18px;
+        height: 2px;
+        background: #9c927f;
+      }
+
+      .paper-stack i::before {
+        top: 34px;
+      }
+      .paper-stack i::after {
+        top: 56px;
+      }
+
+      .slide.active .paper-stack i {
+        animation: paper-float 3.8s ease-in-out infinite;
+      }
+
+      @keyframes paper-float {
+        0%,
+        100% {
+          translate: 0 0;
+        }
+        50% {
+          translate: 0 -8px;
+        }
+      }
+
+      .problem-figure {
+        display: grid;
+        place-items: center;
+        min-height: 250px;
+      }
+
+      .pressure-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .pressure-svg path {
+        fill: none;
+        stroke: rgba(224, 100, 85, 0.55);
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-dasharray: 8 10;
+      }
+
+      .slide.active .pressure-svg path {
+        animation: dash-run 1.6s linear infinite;
+      }
+
+      .pressure-ring {
+        width: 238px;
+        height: 238px;
+        border-radius: 50%;
+        border: 2px solid rgba(230, 169, 61, 0.45);
+        display: grid;
+        place-items: center;
+        position: relative;
+      }
+
+      .pressure-ring::before,
+      .pressure-ring::after {
+        content: "";
+        position: absolute;
+        inset: 26px;
+        border-radius: 50%;
+        border: 1px dashed rgba(230, 169, 61, 0.35);
+      }
+
+      .pressure-ring::after {
+        inset: 54px;
+        border-color: rgba(224, 100, 85, 0.55);
+      }
+
+      .slide.active .pressure-ring::before {
+        animation: spin 18s linear infinite;
+      }
+      .slide.active .pressure-ring::after {
+        animation: spin 10s linear infinite reverse;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .pressure-ring strong {
+        width: 118px;
+        height: 118px;
+        border-radius: 50%;
+        background: var(--cream);
+        color: var(--ink);
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-size: 20px;
+        line-height: 1.05;
+        padding: 16px;
+      }
+
+      .node-label {
+        position: absolute;
+        background: #202020;
+        border: 1px solid var(--line-2);
+        border-radius: 6px;
+        padding: 8px 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .node-label.one {
+        top: 16px;
+        left: 26px;
+      }
+      .node-label.two {
+        right: 10px;
+        top: 118px;
+      }
+      .node-label.three {
+        bottom: 22px;
+        left: 32px;
+      }
+
+      .org-map {
+        grid-column: span 3;
+        min-height: 122px;
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 8px;
+        padding: 16px;
+        align-items: center;
+      }
+
+      .org-map::before {
+        content: "";
+        position: absolute;
+        left: 8%;
+        right: 8%;
+        top: 50%;
+        height: 2px;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(230, 169, 61, 0.75),
+          transparent
+        );
+      }
+
+      .slide.active .org-map::before {
+        animation: scan-line 2.1s linear infinite;
+      }
+
+      @keyframes scan-line {
+        0% {
+          transform: scaleX(0.2);
+          opacity: 0.25;
+        }
+        50% {
+          transform: scaleX(1);
+          opacity: 1;
+        }
+        100% {
+          transform: scaleX(0.2);
+          opacity: 0.25;
+        }
+      }
+
+      .org-node {
+        position: relative;
+        z-index: 1;
+        background: #202020;
+        border: 1px solid var(--line-2);
+        border-radius: 8px;
+        padding: 10px;
+        text-align: center;
+        color: var(--text);
+        font-size: 13px;
+      }
+
+      .persona-map {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .persona-map .bubble {
+        border: 1px solid var(--line-2);
+        background: #202020;
+        border-radius: 8px;
+        padding: 13px;
+        color: var(--muted);
+        font-size: 15px;
+        line-height: 1.25;
+      }
+
+      .persona-map .bubble.main {
+        grid-column: span 2;
+        background: var(--cream);
+        color: var(--ink);
+        font-size: 22px;
+        font-weight: 720;
+        text-align: center;
+      }
+
+      .value-flow {
+        min-height: 122px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .value-flow-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .value-flow-svg path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.58);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 9 12;
+      }
+
+      .slide.active .value-flow-svg path {
+        animation: dash-run 1.25s linear infinite;
+      }
+
+      .value-flow .route-dot {
+        width: 12px;
+        height: 12px;
+        box-shadow:
+          0 0 0 5px rgba(230, 169, 61, 0.12),
+          0 0 16px rgba(230, 169, 61, 0.5);
+        top: calc(50% - 6px);
+        left: 13%;
+      }
+
+      .slide.active .value-flow .route-dot {
+        animation: value-dot 3s var(--ease-out-quint) infinite;
+      }
+
+      @keyframes value-dot {
+        0% {
+          left: 13%;
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        10%,
+        88% {
+          opacity: 1;
+        }
+        50% {
+          left: 50%;
+          transform: scale(1);
+        }
+        100% {
+          left: 87%;
+          transform: scale(0.8);
+          opacity: 0;
+        }
+      }
+
+      .value-pill {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        border-radius: 8px;
+        border: 1px solid var(--line-2);
+        background: #202020;
+        color: var(--text);
+        font-size: 18px;
+        line-height: 1.1;
+        padding: 10px;
+      }
+
+      .value-flow::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 13%;
+        right: 13%;
+        height: 2px;
+        background: repeating-linear-gradient(
+          90deg,
+          var(--amber) 0 12px,
+          transparent 12px 22px
+        );
+        opacity: 0.65;
+      }
+
+      .slide.active .value-flow::before {
+        animation: dash-run 1.2s linear infinite;
+      }
+
+      .position-map {
+        min-height: 205px;
+        padding: 20px;
+      }
+
+      .quadrant {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(255, 255, 255, 0.025);
+      }
+
+      .quadrant.q1 {
+        left: 43px;
+        top: 28px;
+        right: 32px;
+        height: 66px;
+        background: rgba(32, 201, 151, 0.06);
+      }
+      .quadrant.q2 {
+        left: 43px;
+        bottom: 45px;
+        right: 32px;
+        height: 66px;
+        background: rgba(230, 169, 61, 0.045);
+      }
+
+      .axis {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.16);
+      }
+
+      .axis.x {
+        left: 42px;
+        right: 32px;
+        bottom: 44px;
+        height: 1px;
+      }
+      .axis.y {
+        left: 42px;
+        top: 28px;
+        bottom: 44px;
+        width: 1px;
+      }
+
+      .axis-label {
+        position: absolute;
+        color: var(--soft);
+        font-size: 12px;
+      }
+
+      .axis-label.right {
+        right: 30px;
+        bottom: 19px;
+      }
+      .axis-label.top {
+        left: 18px;
+        top: 16px;
+        transform: rotate(-90deg);
+        transform-origin: left top;
+      }
+
+      .plot {
+        position: absolute;
+        width: 112px;
+        padding: 9px;
+        border-radius: 7px;
+        border: 1px solid var(--line-2);
+        background: #202020;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.15;
+      }
+
+      .plot.aegas {
+        width: 138px;
+        background: var(--cream);
+        color: var(--ink);
+        font-weight: 760;
+        right: 44px;
+        top: 35px;
+      }
+
+      .plot::before {
+        content: "";
+        position: absolute;
+        left: -18px;
+        top: 50%;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--soft);
+        transform: translateY(-50%);
+      }
+
+      .plot.aegas::before {
+        background: var(--green);
+        box-shadow: 0 0 0 6px rgba(32, 201, 151, 0.14);
+      }
+
+      .plot.lms {
+        left: 72px;
+        bottom: 60px;
+      }
+      .plot.grade {
+        left: 210px;
+        top: 93px;
+      }
+      .plot.ai-prompt {
+        right: 86px;
+        bottom: 62px;
+      }
+
+      .slide.active .plot.aegas {
+        animation: emphasis-pop 1.6s var(--ease-out-expo) 0.55s both;
+      }
+
+      .slide[data-title="Competitors"] {
+        gap: 14px;
+      }
+
+      .slide[data-title="Competitors"] .slide-head {
+        padding-bottom: 14px;
+      }
+
+      .slide[data-title="Competitors"] h2 {
+        font-size: 38px;
+      }
+
+      .slide[data-title="Competitors"] .content {
+        gap: 12px;
+      }
+
+      .slide[data-title="Competitors"] .position-map {
+        min-height: 176px;
+      }
+
+      .slide[data-title="Competitors"] .compare {
+        font-size: 14px;
+      }
+
+      .slide[data-title="Competitors"] .compare th,
+      .slide[data-title="Competitors"] .compare td {
+        padding: 5px 12px;
+        line-height: 1.22;
+      }
+
+      .slide[data-title="Problem"] .panel p {
+        font-size: 17px;
+        line-height: 1.28;
+      }
+
+      .slide[data-title="Problem"] .big-line {
+        font-size: 32px;
+        line-height: 1.12;
+      }
+
+      .problem-statement {
+        background: #241f16;
+        border-color: rgba(230, 169, 61, 0.55);
+        display: flex;
+        align-items: center;
+        min-height: 250px;
+      }
+
+      .slide[data-title="Problem"] .problem-statement p {
+        color: var(--amber);
+        font-size: 38px;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+      }
+
+      .slide[data-title="Customers"] .panel.alt {
+        padding: 20px;
+        background: #f5e2b6;
+        border-color: rgba(230, 169, 61, 0.7);
+      }
+
+      .slide[data-title="Customers"] .panel.alt h3 {
+        margin-bottom: 10px;
+        color: #7b4d00;
+      }
+
+      .slide[data-title="Customers"] .panel.alt li {
+        font-size: 16.5px;
+        line-height: 1.24;
+        color: #45351b;
+      }
+
+      .slide[data-title="Customers"] .panel.alt li + li {
+        margin-top: 6px;
+      }
+
+      .slide[data-title="Customers"] .panel:not(.alt) {
+        background: #16251f;
+        border-color: rgba(32, 201, 151, 0.45);
+      }
+
+      .slide[data-title="Customers"] .panel:not(.alt) h3 {
+        color: var(--green);
+      }
+
+      .slide[data-title="Customers"] .persona-map {
+        background:
+          linear-gradient(135deg, rgba(32, 201, 151, 0.12), transparent 42%),
+          linear-gradient(315deg, rgba(230, 169, 61, 0.13), transparent 48%),
+          #1d1a16;
+        border-color: rgba(230, 169, 61, 0.35);
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble {
+        background: #211f1b;
+        border-color: rgba(230, 169, 61, 0.32);
+        color: #dbcaa8;
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble:nth-child(2) {
+        border-color: rgba(32, 201, 151, 0.45);
+        color: #b7eadb;
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble:nth-child(3) {
+        border-color: rgba(224, 100, 85, 0.5);
+        color: #f1c1ba;
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble:nth-child(4) {
+        border-color: rgba(230, 169, 61, 0.55);
+        color: #f2d59a;
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble:nth-child(5) {
+        border-color: rgba(32, 201, 151, 0.45);
+        color: #b7eadb;
+      }
+
+      .slide[data-title="Customers"] .persona-map .bubble.main {
+        background: var(--green);
+        color: #071c15;
+        border-color: transparent;
+      }
+
+      .slide[data-title="Value"] .panel {
+        border-top: 4px solid var(--green);
+        background: #14241f;
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(2) {
+        border-top-color: var(--amber);
+        background: #261f13;
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(3) {
+        border-top-color: var(--red);
+        background: #281918;
+      }
+
+      .slide[data-title="Value"] .panel:nth-child(1) h3 {
+        color: var(--green);
+      }
+      .slide[data-title="Value"] .panel:nth-child(2) h3 {
+        color: var(--amber);
+      }
+      .slide[data-title="Value"] .panel:nth-child(3) h3 {
+        color: #ff9c8f;
+      }
+
+      .slide[data-title="Value"] .value-flow {
+        background:
+          linear-gradient(
+            90deg,
+            rgba(32, 201, 151, 0.12),
+            rgba(230, 169, 61, 0.12),
+            rgba(224, 100, 85, 0.12)
+          ),
+          #1a1a1a;
+        border-color: rgba(230, 169, 61, 0.35);
+      }
+
+      .slide[data-title="Value"] .value-pill:nth-of-type(2) {
+        background: #102820;
+        border-color: rgba(32, 201, 151, 0.6);
+        color: #b7eadb;
+      }
+
+      .slide[data-title="Value"] .value-pill:nth-of-type(3) {
+        background: #2b2111;
+        border-color: rgba(230, 169, 61, 0.65);
+        color: #f2d59a;
+      }
+
+      .slide[data-title="Value"] .value-pill:nth-of-type(4) {
+        background: #301917;
+        border-color: rgba(224, 100, 85, 0.65);
+        color: #f1c1ba;
+      }
+
+      @keyframes emphasis-pop {
+        0% {
+          transform: scale(0.92);
+        }
+        45% {
+          transform: scale(1.04);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .flywheel {
+        grid-column: span 4;
+        min-height: 138px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        padding: 18px;
+      }
+
+      .flywheel-svg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .flywheel-svg path {
+        fill: none;
+        stroke: rgba(230, 169, 61, 0.5);
+        stroke-width: 3;
+        stroke-linecap: round;
+        stroke-dasharray: 12 14;
+      }
+
+      .slide.active .flywheel-svg path {
+        animation: dash-run 1.7s linear infinite;
+      }
+
+      .flywheel-item {
+        background: #202020;
+        border: 1px solid var(--line-2);
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: var(--text);
+        font-size: 17px;
+        line-height: 1.15;
+        padding: 12px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .flywheel-item:not(:last-child)::after {
+        content: "";
+        position: absolute;
+        right: -15px;
+        top: 50%;
+        width: 18px;
+        height: 2px;
+        background: var(--amber);
+        transform: translateY(-50%);
+        z-index: 3;
+      }
+
+      .flywheel-item:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        right: -18px;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-top: 5px solid transparent;
+        border-bottom: 5px solid transparent;
+        border-left: 7px solid var(--amber);
+        transform: translateY(-50%);
+        z-index: 3;
+      }
+
+      .flywheel::before {
+        content: none;
+        position: absolute;
+        inset: 28px 80px;
+        border: 2px dashed rgba(230, 169, 61, 0.4);
+        border-radius: 50%;
+      }
+
+      .slide.active .flywheel::before {
+        animation: spin 16s linear infinite;
+      }
+
+      .canvas .panel::before {
+        content: "";
+        position: absolute;
+        left: 16px;
+        top: 12px;
+        width: 28px;
+        height: 3px;
+        border-radius: 2px;
+        background: var(--amber);
+      }
+
+      .metric:nth-child(2) {
+        border-top-color: var(--amber);
+      }
+      .metric:nth-child(3) {
+        border-top-color: var(--red);
+      }
+      .metric strong {
+        display: block;
+        font-size: 29px;
+        line-height: 1.05;
+        margin-bottom: 8px;
+      }
+      .metric span {
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.34;
+      }
+
+      .footer {
+        color: var(--soft);
+        font-size: 13px;
+        display: flex;
+        justify-content: space-between;
+        border-top: 1px solid var(--line);
+        padding-top: 12px;
+      }
+
+      .canvas {
+        display: grid;
+        grid-template-columns: 1.05fr 1fr 1.16fr 1fr 1.05fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 10px;
+        height: 100%;
+      }
+
+      .canvas .panel {
+        padding: 16px;
+      }
+
+      .canvas .panel h3 {
+        font-size: 19px;
+        margin-bottom: 9px;
+      }
+      .canvas .panel p,
+      .canvas li {
+        font-size: 14.5px;
+        line-height: 1.28;
+      }
+      .tall {
+        grid-row: span 2;
+      }
+      .center-value {
+        background: var(--cream);
+        color: var(--ink);
+      }
+      .center-value p,
+      .center-value li {
+        color: #554d42;
+      }
+
+      .qa {
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        gap: 26px;
+      }
+
+      .qa h2 {
+        font-size: 82px;
+        max-width: none;
+      }
+      .qa p {
+        color: var(--muted);
+        font-size: 25px;
+      }
+
+      @media (max-width: 900px) {
+        body {
+          overflow: auto;
+        }
+        .app {
+          display: block;
+          height: auto;
+          min-height: 100vh;
+        }
+        .nav {
+          display: none;
+        }
+        .stage {
+          overflow: visible;
+          padding: 0;
+          display: block;
+        }
+        .controls,
+        .counter,
+        .progress {
+          display: none;
+        }
+        .deck {
+          width: 100%;
+          height: auto;
+          transform: none !important;
+        }
+        .slide {
+          position: relative;
+          display: flex;
+          width: 100%;
+          height: auto;
+          min-height: 100vh;
+          padding: 28px 18px;
+          border-bottom: 1px solid var(--line);
+        }
+        .slide:not(.active) {
+          display: flex;
+        }
+        .slide-head,
+        .cover,
+        .content,
+        .grid-2,
+        .grid-3,
+        .grid-4,
+        .wide-left,
+        .team-grid,
+        .workflow,
+        .journey,
+        .metric-strip,
+        .canvas {
+          grid-template-columns: 1fr;
+          height: auto;
+        }
+        .panel[style*="grid-column"] {
+          grid-column: auto !important;
+        }
+        .figure[style*="grid-column"],
+        .org-map,
+        .persona-map,
+        .flywheel,
+        .value-flow {
+          grid-column: auto !important;
+        }
+        .value-flow,
+        .flywheel,
+        .org-map,
+        .persona-map {
+          grid-template-columns: 1fr;
+        }
+        .tall,
+        .center-value {
+          grid-row: auto;
+        }
+        h1,
+        .qa h2 {
+          font-size: 56px;
+        }
+        h2 {
+          font-size: 32px;
+        }
+        .section-title {
+          max-width: none;
+        }
+        .cover-copy {
+          align-items: stretch;
+          text-align: left;
+        }
+        .cover-main {
+          align-items: flex-start;
+          transform: none;
+        }
+        .cover-meta {
+          position: static;
+          margin-top: 28px;
+        }
+      }
+
+      @media print {
+        @page {
+          size: 13.333in 7.5in;
+          margin: 0;
+        }
+        html,
+        body {
+          overflow: visible;
+          background: var(--bg);
+        }
+        .app {
+          display: block;
+          width: auto;
+          height: auto;
+          background: var(--bg);
+        }
+        .nav,
+        .controls,
+        .counter,
+        .progress {
+          display: none;
+        }
+        .stage {
+          display: block;
+          overflow: visible;
+        }
+        .deck {
+          width: 1280px;
+          height: auto;
+          transform: none !important;
+        }
+        .slide {
+          position: relative;
+          display: flex !important;
+          width: 1280px;
+          height: 720px;
+          page-break-after: always;
+          break-after: page;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app" id="app">
+      <aside class="nav">
+        <div class="brand">
+          <strong>AEGAS</strong>
+        </div>
+        <div class="nav-list" id="navList"></div>
+      </aside>
+
+      <section class="stage">
+        <div class="progress" id="progress"></div>
+        <div class="counter" id="counter">1 / 11</div>
+        <div class="controls" aria-label="Slide controls">
+          <button
+            class="control"
+            id="toggleNav"
+            aria-label="Toggle sidebar"
+            title="Toggle sidebar (S)"
+          >
+            Nav
+          </button>
+          <button
+            class="control"
+            id="toggleFullscreen"
+            aria-label="Toggle fullscreen"
+            title="Fullscreen (F)"
+          >
+            Full
+          </button>
+          <button class="control" id="prev" aria-label="Previous slide">
+            &lsaquo;
+          </button>
+          <button class="control" id="next" aria-label="Next slide">
+            &rsaquo;
+          </button>
+        </div>
+
+        <div class="deck" id="deck">
+          <section class="slide active" data-title="Pitch">
+            <div class="cover content">
+              <div class="cover-copy">
+                <div class="cover-main">
+                  <h1 class="cover-title">
+                    AEGAS <span>for universities</span>
+                  </h1>
+                  <p class="subhead" style="margin-top: 26px">
+                    Human-in-the-Loop AI grading and accreditation-ready
+                    reporting for handwritten exams.
+                  </p>
+                </div>
+                <div class="cover-meta">
+                  Entrepreneurship Course Business Presentation<br />
+                  Instructor: Dr. Khulood Shebib Khansaheb<br />
+                  Code: ENT242
+                </div>
               </div>
-              <div class="cover-meta">
-                Entrepreneurship Course Business Presentation<br />
-                Instructor: Dr. Khulood Shebib Khansaheb<br />
-                Code: ENT242
+              <div class="figure cover-figure">
+                <div class="visual-grid"></div>
+                <div class="mini-card exam">
+                  <b>Exam batch</b
+                  ><span>Handwritten PDFs enter one review queue.</span>
+                </div>
+                <div class="mini-card ai">
+                  <b>AI draft</b
+                  ><span>Scores and feedback are proposed, not finalized.</span>
+                </div>
+                <div class="mini-card report">
+                  <b>CLO report</b
+                  ><span>Assessment data becomes course evidence.</span>
+                </div>
+                <div class="mini-card appeal">
+                  <b>Appeals</b
+                  ><span>Student questions stay tracked and visible.</span>
+                </div>
+                <div class="paper-stack">
+                  <i style="--r: -7deg; --x: -8px; --y: 10px"></i>
+                  <i style="--r: 4deg; --x: 7px; --y: 4px"></i>
+                  <i style="--r: 0deg; --x: 0; --y: 0"></i>
+                </div>
               </div>
             </div>
-            <div class="figure cover-figure">
-              <div class="visual-grid"></div>
-              <div class="mini-card exam"><b>Exam batch</b><span>Handwritten PDFs enter one review queue.</span></div>
-              <div class="mini-card ai"><b>AI draft</b><span>Scores and feedback are proposed, not finalized.</span></div>
-              <div class="mini-card report"><b>CLO report</b><span>Assessment data becomes course evidence.</span></div>
-              <div class="mini-card appeal"><b>Appeals</b><span>Student questions stay tracked and visible.</span></div>
-              <div class="paper-stack">
-                <i style="--r:-7deg;--x:-8px;--y:10px;"></i>
-                <i style="--r:4deg;--x:7px;--y:4px;"></i>
-                <i style="--r:0deg;--x:0;--y:0;"></i>
+            <div class="footer">
+              <span>AEGAS business pitch</span><span>01 / 11</span>
+            </div>
+          </section>
+
+          <section class="slide" data-title="Team">
+            <div class="slide-head">
+              <h2>
+                Six founders, business roles, one education workflow problem.
+              </h2>
+            </div>
+            <div class="content team-grid">
+              <div class="person">
+                <div class="role">CEO</div>
+                <strong>Tahamid Hossain</strong><span>Business Leader</span>
+              </div>
+              <div class="person">
+                <div class="role">CTO</div>
+                <strong>Rufaid Bin Omar</strong
+                ><span>Technology and product architecture</span>
+              </div>
+              <div class="person">
+                <div class="role">CFO</div>
+                <strong>Daniel Obeid</strong
+                ><span>Financial planning and pricing</span>
+              </div>
+              <div class="person">
+                <div class="role">COO</div>
+                <strong>Alonood Saad</strong
+                ><span>Operations and university delivery</span>
+              </div>
+              <div class="person">
+                <div class="role">CPO</div>
+                <strong>Noraan Mohamed</strong
+                ><span>Product experience and customer journey</span>
+              </div>
+              <div class="person">
+                <div class="role">Growth</div>
+                <strong>Paul Bou Antoun</strong
+                ><span>Adoption, partnerships, and faculty referrals</span>
+              </div>
+              <div class="figure org-map">
+                <div class="org-node">Strategy</div>
+                <div class="org-node">Technology</div>
+                <div class="org-node">Finance</div>
+                <div class="org-node">Delivery</div>
+                <div class="org-node">Product</div>
+                <div class="org-node">Adoption</div>
               </div>
             </div>
-          </div>
-          <div class="footer"><span>AEGAS business pitch</span><span>01 / 11</span></div>
-        </section>
-
-        <section class="slide" data-title="Team">
-          <div class="slide-head">
-            <h2>Six founders, business roles, one education workflow problem.</h2>
-          </div>
-          <div class="content team-grid">
-            <div class="person"><div class="role">CEO</div><strong>Tahamid Hossain</strong><span>Group leader - 20220001801</span></div>
-            <div class="person"><div class="role">CTO</div><strong>Rufaid Bin Omar</strong><span>Technology and product architecture - 20230003171</span></div>
-            <div class="person"><div class="role">CFO</div><strong>Noraan Mohamed</strong><span>Financial planning and pricing - 20180006549</span></div>
-            <div class="person"><div class="role">COO</div><strong>Paul Bou Antoun</strong><span>Operations and university delivery - 20240005250</span></div>
-            <div class="person"><div class="role">CPO</div><strong>Daniel Obeid</strong><span>Product experience and customer journey - 20230003557</span></div>
-            <div class="person"><div class="role">Growth</div><strong>Alonood Saad</strong><span>Adoption, partnerships, and faculty referrals - 20240004451</span></div>
-            <div class="figure org-map">
-              <div class="org-node">Strategy</div>
-              <div class="org-node">Technology</div>
-              <div class="org-node">Finance</div>
-              <div class="org-node">Delivery</div>
-              <div class="org-node">Product</div>
-              <div class="org-node">Adoption</div>
+            <div class="footer">
+              <span>Who are we?</span><span>02 / 11</span>
             </div>
-          </div>
-          <div class="footer"><span>Who are we?</span><span>02 / 11</span></div>
-        </section>
+          </section>
 
-        <section class="slide" data-title="Problem">
-          <div class="slide-head">
-            <h2>Manual grading creates a business problem for universities, not just an inconvenience for instructors.</h2>
-          </div>
-          <div class="content grid-3">
-            <div class="panel"><h3>Time loss</h3><p>Handwritten exam grading is slow, repetitive, and concentrated around midterm and final deadlines.</p></div>
-            <div class="panel"><h3>Quality risk</h3><p>Fatigue increases the risk of inconsistent marks, delayed feedback, and student complaints.</p></div>
-            <div class="panel"><h3>Compliance burden</h3><p>CLO tracking, ABET-style reports, and course documentation are still assembled manually in many departments.</p></div>
-            <div class="figure problem-figure" style="grid-column:span 1;">
-              <div class="visual-grid"></div>
-              <svg class="pressure-svg" viewBox="0 0 360 250" aria-hidden="true">
-                <defs>
-                  <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-                    <path d="M0 0 L10 5 L0 10 Z" fill="#e06455" />
-                  </marker>
-                </defs>
-                <path marker-end="url(#arrowRed)" d="M72 48 C116 64 132 82 152 112" />
-                <path marker-end="url(#arrowRed)" d="M292 132 C242 132 220 130 200 124" />
-                <path marker-end="url(#arrowRed)" d="M92 208 C124 184 140 164 154 140" />
-              </svg>
-              <div class="pressure-ring">
-                <strong>grading pressure</strong>
-                <span class="node-label one">deadlines</span>
-                <span class="node-label two">appeals</span>
-                <span class="node-label three">reports</span>
+          <section class="slide" data-title="Problem">
+            <div class="slide-head">
+              <h2>
+                Manual grading creates a business problem for universities, not
+                just an inconvenience for instructors.
+              </h2>
+            </div>
+            <div class="content grid-3">
+              <div class="panel">
+                <h3>Time loss</h3>
+                <p>
+                  Handwritten exam grading is slow, repetitive, and concentrated
+                  around midterm and final deadlines.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>Quality risk</h3>
+                <p>
+                  Fatigue increases the risk of inconsistent marks, delayed
+                  feedback, and student complaints.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>Compliance burden</h3>
+                <p>
+                  CLO tracking, ABET-style reports, and course documentation are
+                  still assembled manually in many departments.
+                </p>
+              </div>
+              <div class="figure problem-figure" style="grid-column: span 1">
+                <div class="visual-grid"></div>
+                <svg
+                  class="pressure-svg"
+                  viewBox="0 0 360 250"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <marker
+                      id="arrowRed"
+                      viewBox="0 0 10 10"
+                      refX="8"
+                      refY="5"
+                      markerWidth="5"
+                      markerHeight="5"
+                      orient="auto"
+                    >
+                      <path d="M0 0 L10 5 L0 10 Z" fill="#e06455" />
+                    </marker>
+                  </defs>
+                  <path
+                    marker-end="url(#arrowRed)"
+                    d="M72 48 C116 64 132 82 152 112"
+                  />
+                  <path
+                    marker-end="url(#arrowRed)"
+                    d="M292 132 C242 132 220 130 200 124"
+                  />
+                  <path
+                    marker-end="url(#arrowRed)"
+                    d="M92 208 C124 184 140 164 154 140"
+                  />
+                </svg>
+                <div class="pressure-ring">
+                  <strong>grading pressure</strong>
+                  <span class="node-label one">deadlines</span>
+                  <span class="node-label two">appeals</span>
+                  <span class="node-label three">reports</span>
+                </div>
+              </div>
+              <div class="panel problem-statement" style="grid-column: span 2">
+                <p class="big-line">
+                  The pain is not only "grading takes long." It is the chain
+                  reaction: overloaded instructors, slower student feedback,
+                  appeal friction, and weak reporting evidence.
+                </p>
               </div>
             </div>
-            <div class="panel problem-statement" style="grid-column:span 2;"><p class="big-line">The pain is not only "grading takes long." It is the chain reaction: overloaded instructors, slower student feedback, appeal friction, and weak reporting evidence.</p></div>
-          </div>
-          <div class="footer"><span>Problem we see</span><span>03 / 11</span></div>
-        </section>
-
-        <section class="slide" data-title="Solution">
-          <div class="slide-head">
-            <h2>AEGAS provides AI assistance without removing instructor authority.</h2>
-          </div>
-          <div class="content">
-            <div class="workflow">
-              <div class="step"><div class="number">1</div><b>Exam processing</b><span>Upload handwritten exam PDFs and organize batches for review.</span></div>
-              <div class="step"><div class="number">2</div><b>Rubric setup</b><span>Instructor approves scoring structure before automation begins.</span></div>
-              <div class="step"><div class="number">3</div><b>AI-drafted marks</b><span>AEGAS proposes scores, feedback, and paper annotations.</span></div>
-              <div class="step"><div class="number">4</div><b>Human verification</b><span>Instructor checks, changes, and approves every result.</span></div>
-              <div class="step"><div class="number">5</div><b>Reports and appeals</b><span>CLO analytics, one-click distribution, and appeal tracking.</span></div>
+            <div class="footer">
+              <span>Problem we see</span><span>03 / 11</span>
             </div>
-            <div class="figure value-flow">
-              <svg class="value-flow-svg" viewBox="0 0 696 122" aria-hidden="true">
-                <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
-              </svg>
-              <div class="value-pill">handwritten exams</div>
-              <div class="value-pill">instructor-approved AI</div>
-              <div class="value-pill">reports + appeals</div>
+          </section>
+
+          <section class="slide" data-title="Solution">
+            <div class="slide-head">
+              <h2>
+                AEGAS provides AI assistance without removing instructor
+                authority.
+              </h2>
             </div>
-            <div class="metric-strip">
-              <div class="metric"><strong>Human oversight first</strong><span>AEGAS drafts. The instructor decides.</span></div>
-              <div class="metric"><strong>Accuracy before automation</strong><span>Automation is useful only when it is reviewable.</span></div>
-              <div class="metric"><strong>Transparent grading</strong><span>Students and departments see clearer evidence and audit trails.</span></div>
+            <div class="content">
+              <div class="workflow">
+                <div class="step">
+                  <div class="number">1</div>
+                  <b>Exam processing</b
+                  ><span
+                    >Upload handwritten exam PDFs and organize batches for
+                    review.</span
+                  >
+                </div>
+                <div class="step">
+                  <div class="number">2</div>
+                  <b>Rubric setup</b
+                  ><span
+                    >Instructor approves scoring structure before automation
+                    begins.</span
+                  >
+                </div>
+                <div class="step">
+                  <div class="number">3</div>
+                  <b>AI-drafted marks</b
+                  ><span
+                    >AEGAS proposes scores, feedback, and paper
+                    annotations.</span
+                  >
+                </div>
+                <div class="step">
+                  <div class="number">4</div>
+                  <b>Human verification</b
+                  ><span
+                    >Instructor checks, changes, and approves every
+                    result.</span
+                  >
+                </div>
+                <div class="step">
+                  <div class="number">5</div>
+                  <b>Reports and appeals</b
+                  ><span
+                    >CLO analytics, one-click distribution, and appeal
+                    tracking.</span
+                  >
+                </div>
+              </div>
+              <div class="figure value-flow">
+                <svg
+                  class="value-flow-svg"
+                  viewBox="0 0 696 122"
+                  aria-hidden="true"
+                >
+                  <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
+                </svg>
+                <div class="value-pill">handwritten exams</div>
+                <div class="value-pill">instructor-approved AI</div>
+                <div class="value-pill">reports + appeals</div>
+              </div>
+              <div class="metric-strip">
+                <div class="metric">
+                  <strong>Human oversight first</strong
+                  ><span>AEGAS drafts. The instructor decides.</span>
+                </div>
+                <div class="metric">
+                  <strong>Accuracy before automation</strong
+                  ><span>Automation is useful only when it is reviewable.</span>
+                </div>
+                <div class="metric">
+                  <strong>Transparent grading</strong
+                  ><span
+                    >Students and departments see clearer evidence and audit
+                    trails.</span
+                  >
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="footer"><span>Solutions provided</span><span>04 / 11</span></div>
-        </section>
-
-        <section class="slide" data-title="Customers">
-          <div class="slide-head">
-            <h2>Our first customers are instructors and academic departments with heavy assessment workloads.</h2>
-          </div>
-          <div class="content wide-left">
-            <div class="panel alt">
-              <h3>Primary customer profile</h3>
-              <ul>
-                <li>University instructors and professors grading large batches of exams.</li>
-                <li>Academic department leads responsible for CLO and course reporting.</li>
-                <li>Higher education institutions following engineering and technology benchmarks.</li>
-                <li>Students benefit indirectly through faster feedback and a clearer appeal process.</li>
-              </ul>
+            <div class="footer">
+              <span>Solutions provided</span><span>04 / 11</span>
             </div>
-            <div class="panel">
-              <h3>Customer jobs</h3>
-              <ul>
-                <li>Grade handwritten student exams accurately.</li>
-                <li>Compile detailed course reports.</li>
-                <li>Track CLO attainment.</li>
-                <li>Distribute results and manage appeals.</li>
-              </ul>
+          </section>
+
+          <section class="slide" data-title="Customers">
+            <div class="slide-head">
+              <h2>
+                Our first customers are instructors and academic departments
+                with heavy assessment workloads.
+              </h2>
             </div>
-            <div class="figure persona-map" style="grid-column:span 2;">
-              <div class="bubble main">Instructor persona: cautious, overloaded, needs proof before adoption</div>
-              <div class="bubble">Needs faster grading and fewer repeated admin tasks.</div>
-              <div class="bubble">Worries about wrong marks, student complaints, and data privacy.</div>
-              <div class="bubble">Feels confident when AI is reviewable and reversible.</div>
-              <div class="bubble">Recommends tools only after seeing saved time and clear evidence.</div>
+            <div class="content wide-left">
+              <div class="panel alt">
+                <h3>Primary customer profile</h3>
+                <ul>
+                  <li>
+                    University instructors and professors grading large batches
+                    of exams.
+                  </li>
+                  <li>
+                    Academic department leads responsible for CLO and course
+                    reporting.
+                  </li>
+                  <li>
+                    Higher education institutions following engineering and
+                    technology benchmarks.
+                  </li>
+                  <li>
+                    Students benefit indirectly through faster feedback and a
+                    clearer appeal process.
+                  </li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Customer jobs</h3>
+                <ul>
+                  <li>Grade handwritten student exams accurately.</li>
+                  <li>Compile detailed course reports.</li>
+                  <li>Track CLO attainment.</li>
+                  <li>Distribute results and manage appeals.</li>
+                </ul>
+              </div>
+              <div class="figure persona-map" style="grid-column: span 2">
+                <div class="bubble main">
+                  Instructor persona: cautious, overloaded, needs proof before
+                  adoption
+                </div>
+                <div class="bubble">
+                  Needs faster grading and fewer repeated admin tasks.
+                </div>
+                <div class="bubble">
+                  Worries about wrong marks, student complaints, and data
+                  privacy.
+                </div>
+                <div class="bubble">
+                  Feels confident when AI is reviewable and reversible.
+                </div>
+                <div class="bubble">
+                  Recommends tools only after seeing saved time and clear
+                  evidence.
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="footer"><span>Customer segments</span><span>05 / 11</span></div>
-        </section>
-
-        <section class="slide" data-title="Value">
-          <div class="slide-head">
-            <h2>AEGAS gives educators back time while making assessment evidence easier to trust.</h2>
-          </div>
-          <div class="content grid-3">
-            <div class="panel"><h3>For instructors</h3><ul><li>Less grading fatigue.</li><li>Faster review cycles.</li><li>Clear control over every score.</li></ul></div>
-            <div class="panel"><h3>For students</h3><ul><li>Quicker feedback.</li><li>More transparent grading.</li><li>Organized appeal submission and tracking.</li></ul></div>
-            <div class="panel"><h3>For institutions</h3><ul><li>Structured CLO analytics.</li><li>Accreditation-ready course reports.</li><li>Cleaner audit trails.</li></ul></div>
-            <div class="figure value-flow" style="grid-column:span 3;">
-              <svg class="value-flow-svg" viewBox="0 0 696 122" aria-hidden="true">
-                <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
-              </svg>
-              <div class="route-dot"></div>
-              <div class="value-pill">saved grading time</div>
-              <div class="value-pill">trusted score review</div>
-              <div class="value-pill">accreditation evidence</div>
+            <div class="footer">
+              <span>Customer segments</span><span>05 / 11</span>
             </div>
-          </div>
-          <div class="footer"><span>Value proposition</span><span>06 / 11</span></div>
-        </section>
+          </section>
 
-        <section class="slide" data-title="Competitors">
-          <div class="slide-head">
-            <h2>Competitors solve pieces of the workflow. AEGAS is designed around the full assessment cycle.</h2>
-          </div>
-          <div class="content">
-            <div class="figure position-map">
-              <div class="visual-grid"></div>
-              <div class="quadrant q1"></div>
-              <div class="quadrant q2"></div>
-              <div class="axis x"></div>
-              <div class="axis y"></div>
-              <div class="axis-label right">workflow coverage</div>
-              <div class="axis-label top">instructor control</div>
-              <div class="plot lms">LMS platforms</div>
-              <div class="plot grade">grading tools</div>
-              <div class="plot ai-prompt">generic AI prompts</div>
-              <div class="plot aegas">AEGAS: full cycle + HITL</div>
+          <section class="slide" data-title="Value">
+            <div class="slide-head">
+              <h2>
+                AEGAS gives educators back time while making assessment evidence
+                easier to trust.
+              </h2>
             </div>
-            <table class="compare">
-              <thead>
-                <tr><th>Option</th><th>What it does well</th><th>Gap AEGAS targets</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>Moodle, Canvas, Blackboard, D2L</td><td>Course delivery, gradebook, LMS administration.</td><td>Not purpose-built for AI-assisted handwritten exam grading plus CLO report generation.</td></tr>
-                <tr><td>Gradescope-style tools</td><td>Digital submission, rubric workflows, grading efficiency.</td><td>Limited fit for our combined human-in-the-loop AI, appeals, and accreditation reporting focus.</td></tr>
-                <tr><td>Spreadsheets and manual reports</td><td>Flexible and familiar for departments.</td><td>Slow, error-prone, hard to audit, and repetitive every semester.</td></tr>
-                <tr><td>Generic AI prompting</td><td>Fast draft responses for isolated tasks.</td><td>No structured rubric control, LMS workflow, privacy model, or verified reporting pipeline.</td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="footer"><span>Competitive landscape</span><span>07 / 11</span></div>
-        </section>
-
-        <section class="slide" data-title="Difference">
-          <div class="slide-head">
-            <h2>Our differentiation is controlled automation for handwritten assessment, not black-box grading.</h2>
-          </div>
-          <div class="content grid-4">
-            <div class="panel alt"><h3>Human-in-the-Loop</h3><p>The instructor remains the final authority, reducing trust barriers and grading bias concerns.</p></div>
-            <div class="panel"><h3>Handwritten exam focus</h3><p>The product targets a bottleneck that many LMS platforms do not directly solve.</p></div>
-            <div class="panel"><h3>CLO and reports</h3><p>Scores turn into structured course and accreditation documents without manual re-entry.</p></div>
-            <div class="panel"><h3>Appeal workflow</h3><p>Feedback, student distribution, and appeals are part of the same process instead of an afterthought.</p></div>
-            <div class="figure flywheel">
-              <svg class="flywheel-svg" viewBox="0 0 1110 138" aria-hidden="true">
-                <defs>
-                  <marker id="arrowFly" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
-                    <path d="M0 0 L10 5 L0 10 Z" fill="#e6a93d" />
-                  </marker>
-                </defs>
-                <path marker-end="url(#arrowFly)" d="M142 68 C255 16 385 16 510 68 C628 118 760 118 888 68" />
-                <path marker-end="url(#arrowFly)" d="M888 68 C765 122 632 122 510 68 C390 18 255 18 142 68" />
-              </svg>
-              <div class="flywheel-item">trust</div>
-              <div class="flywheel-item">speed</div>
-              <div class="flywheel-item">evidence</div>
-              <div class="flywheel-item">adoption</div>
+            <div class="content grid-3">
+              <div class="panel">
+                <h3>For instructors</h3>
+                <ul>
+                  <li>Less grading fatigue.</li>
+                  <li>Faster review cycles.</li>
+                  <li>Clear control over every score.</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>For students</h3>
+                <ul>
+                  <li>Quicker feedback.</li>
+                  <li>More transparent grading.</li>
+                  <li>Organized appeal submission and tracking.</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>For institutions</h3>
+                <ul>
+                  <li>Structured CLO analytics.</li>
+                  <li>Accreditation-ready course reports.</li>
+                  <li>Cleaner audit trails.</li>
+                </ul>
+              </div>
+              <div class="figure value-flow" style="grid-column: span 3">
+                <svg
+                  class="value-flow-svg"
+                  viewBox="0 0 696 122"
+                  aria-hidden="true"
+                >
+                  <path d="M92 61 C185 61 250 61 344 61 S510 61 604 61" />
+                </svg>
+                <div class="route-dot"></div>
+                <div class="value-pill">saved grading time</div>
+                <div class="value-pill">trusted score review</div>
+                <div class="value-pill">accreditation evidence</div>
+              </div>
             </div>
-          </div>
-          <div class="footer"><span>Unique advantage</span><span>08 / 11</span></div>
-        </section>
+            <div class="footer">
+              <span>Value proposition</span><span>06 / 11</span>
+            </div>
+          </section>
 
-        <section class="slide" data-title="GTM">
-          <div class="slide-head">
-            <h2>Go-to-market starts inside departments where grading pressure is visible and urgent.</h2>
-          </div>
-          <div class="content journey">
-            <div class="step"><div class="number">1</div><b>Awareness</b><span>University meetings, LMS channels, academic technology events, and faculty recommendations.</span></div>
-            <div class="step"><div class="number">2</div><b>Consideration</b><span>Live demos, trial access, case studies, and comparison against manual grading.</span></div>
-            <div class="step"><div class="number">3</div><b>Purchase</b><span>Department pilot, LMS integration setup, rubric templates, and onboarding support.</span></div>
-            <div class="step"><div class="number">4</div><b>Retention</b><span>Regular exam usage, CLO reports, appeals dashboard, support, and training workshops.</span></div>
-            <div class="step"><div class="number">5</div><b>Advocacy</b><span>Faculty referrals, department adoption, accreditation evidence, and success stories.</span></div>
-          </div>
-          <div class="footer"><span>Customer attraction strategy</span><span>09 / 11</span></div>
-        </section>
+          <section class="slide" data-title="Competitors">
+            <div class="slide-head">
+              <h2>
+                Competitors solve pieces of the workflow. AEGAS is designed
+                around the full assessment cycle.
+              </h2>
+            </div>
+            <div class="content">
+              <div class="figure position-map">
+                <div class="visual-grid"></div>
+                <div class="quadrant q1"></div>
+                <div class="quadrant q2"></div>
+                <div class="axis x"></div>
+                <div class="axis y"></div>
+                <div class="axis-label right">workflow coverage</div>
+                <div class="axis-label top">instructor control</div>
+                <div class="plot lms">LMS platforms</div>
+                <div class="plot grade">grading tools</div>
+                <div class="plot ai-prompt">generic AI prompts</div>
+                <div class="plot aegas">AEGAS: full cycle + HITL</div>
+              </div>
+              <table class="compare">
+                <thead>
+                  <tr>
+                    <th>Option</th>
+                    <th>What it does well</th>
+                    <th>Gap AEGAS targets</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Moodle, Canvas, Blackboard, D2L</td>
+                    <td>Course delivery, gradebook, LMS administration.</td>
+                    <td>
+                      Not purpose-built for AI-assisted handwritten exam grading
+                      plus CLO report generation.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Gradescope-style tools</td>
+                    <td>
+                      Digital submission, rubric workflows, grading efficiency.
+                    </td>
+                    <td>
+                      Limited fit for our combined human-in-the-loop AI,
+                      appeals, and accreditation reporting focus.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Spreadsheets and manual reports</td>
+                    <td>Flexible and familiar for departments.</td>
+                    <td>
+                      Slow, error-prone, hard to audit, and repetitive every
+                      semester.
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Generic AI prompting</td>
+                    <td>Fast draft responses for isolated tasks.</td>
+                    <td>
+                      No structured rubric control, LMS workflow, privacy model,
+                      or verified reporting pipeline.
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="footer">
+              <span>Competitive landscape</span><span>07 / 11</span>
+            </div>
+          </section>
 
-        <section class="slide" data-title="Business Model">
-          <div class="slide-head">
-            <h2>Business model: sell trusted assessment infrastructure to universities.</h2>
-          </div>
-          <div class="content canvas">
-            <div class="panel tall"><h3>Key partners</h3><ul><li>Universities and colleges</li><li>LMS providers</li><li>Cloud and AI providers</li><li>Accreditation organizations</li></ul></div>
-            <div class="panel"><h3>Key activities</h3><ul><li>AI-assisted grading</li><li>CLO analytics</li><li>Appeals management</li><li>Instructor support</li></ul></div>
-            <div class="panel center-value tall"><h3>Value propositions</h3><ul><li>Faster and more accurate grading</li><li>Human-in-the-Loop verification</li><li>Automated CLO tracking</li><li>Transparent appeals</li><li>Accreditation-ready reporting</li></ul></div>
-            <div class="panel"><h3>Relationships</h3><ul><li>Personalized onboarding</li><li>Technical support</li><li>Training workshops</li><li>Long-term partnerships</li></ul></div>
-            <div class="panel tall"><h3>Customers</h3><ul><li>Instructors</li><li>Professors</li><li>Department leads</li><li>Universities with heavy assessment loads</li></ul></div>
-            <div class="panel"><h3>Resources</h3><ul><li>AI grading system</li><li>Cloud infrastructure</li><li>Development team</li><li>Education experts</li></ul></div>
-            <div class="panel"><h3>Channels</h3><ul><li>Direct university sales</li><li>Website demos</li><li>Academic conferences</li><li>LMS integrations</li><li>Faculty referrals</li></ul></div>
-          </div>
-          <div class="footer"><span>Business model canvas</span><span>10 / 11</span></div>
-        </section>
+          <section class="slide" data-title="Difference">
+            <div class="slide-head">
+              <h2>
+                Our differentiation is controlled automation for handwritten
+                assessment, not black-box grading.
+              </h2>
+            </div>
+            <div class="content grid-4">
+              <div class="panel alt">
+                <h3>Human-in-the-Loop</h3>
+                <p>
+                  The instructor remains the final authority, reducing trust
+                  barriers and grading bias concerns.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>Handwritten exam focus</h3>
+                <p>
+                  The product targets a bottleneck that many LMS platforms do
+                  not directly solve.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>CLO and reports</h3>
+                <p>
+                  Scores turn into structured course and accreditation documents
+                  without manual re-entry.
+                </p>
+              </div>
+              <div class="panel">
+                <h3>Appeal workflow</h3>
+                <p>
+                  Feedback, student distribution, and appeals are part of the
+                  same process instead of an afterthought.
+                </p>
+              </div>
+              <div class="figure flywheel">
+                <svg
+                  class="flywheel-svg"
+                  viewBox="0 0 1110 138"
+                  aria-hidden="true"
+                >
+                  <defs>
+                    <marker
+                      id="arrowFly"
+                      viewBox="0 0 10 10"
+                      refX="8"
+                      refY="5"
+                      markerWidth="5"
+                      markerHeight="5"
+                      orient="auto"
+                    >
+                      <path d="M0 0 L10 5 L0 10 Z" fill="#e6a93d" />
+                    </marker>
+                  </defs>
+                  <path
+                    marker-end="url(#arrowFly)"
+                    d="M142 68 C255 16 385 16 510 68 C628 118 760 118 888 68"
+                  />
+                  <path
+                    marker-end="url(#arrowFly)"
+                    d="M888 68 C765 122 632 122 510 68 C390 18 255 18 142 68"
+                  />
+                </svg>
+                <div class="flywheel-item">trust</div>
+                <div class="flywheel-item">speed</div>
+                <div class="flywheel-item">evidence</div>
+                <div class="flywheel-item">adoption</div>
+              </div>
+            </div>
+            <div class="footer">
+              <span>Unique advantage</span><span>08 / 11</span>
+            </div>
+          </section>
 
-        <section class="slide qa" data-title="Questions">
-          <h2>Questions?</h2>
-          <p>AEGAS - Human-in-the-Loop AI grading and accreditation-ready reporting.</p>
-          <div class="footer" style="width:100%;"><span>ENT 242 business presentation</span><span>11 / 11</span></div>
-        </section>
-      </div>
-    </section>
-  </main>
+          <section class="slide" data-title="GTM">
+            <div class="slide-head">
+              <h2>
+                Go-to-market starts inside departments where grading pressure is
+                visible and urgent.
+              </h2>
+            </div>
+            <div class="content journey">
+              <div class="step">
+                <div class="number">1</div>
+                <b>Awareness</b
+                ><span
+                  >University meetings, LMS channels, academic technology
+                  events, and faculty recommendations.</span
+                >
+              </div>
+              <div class="step">
+                <div class="number">2</div>
+                <b>Consideration</b
+                ><span
+                  >Live demos, trial access, case studies, and comparison
+                  against manual grading.</span
+                >
+              </div>
+              <div class="step">
+                <div class="number">3</div>
+                <b>Purchase</b
+                ><span
+                  >Department pilot, LMS integration setup, rubric templates,
+                  and onboarding support.</span
+                >
+              </div>
+              <div class="step">
+                <div class="number">4</div>
+                <b>Retention</b
+                ><span
+                  >Regular exam usage, CLO reports, appeals dashboard, support,
+                  and training workshops.</span
+                >
+              </div>
+              <div class="step">
+                <div class="number">5</div>
+                <b>Advocacy</b
+                ><span
+                  >Faculty referrals, department adoption, accreditation
+                  evidence, and success stories.</span
+                >
+              </div>
+            </div>
+            <div class="footer">
+              <span>Customer attraction strategy</span><span>09 / 11</span>
+            </div>
+          </section>
 
-<script>
-  const slides = Array.from(document.querySelectorAll(".slide"));
-  const navList = document.getElementById("navList");
-  const counter = document.getElementById("counter");
-  const progress = document.getElementById("progress");
-  const deck = document.getElementById("deck");
-  const app = document.getElementById("app");
-  const toggleNav = document.getElementById("toggleNav");
-  const toggleFullscreen = document.getElementById("toggleFullscreen");
-  let current = 0;
+          <section class="slide" data-title="Business Model">
+            <div class="slide-head">
+              <h2>
+                Business model: sell trusted assessment infrastructure to
+                universities.
+              </h2>
+            </div>
+            <div class="content canvas">
+              <div class="panel tall">
+                <h3>Key partners</h3>
+                <ul>
+                  <li>Universities and colleges</li>
+                  <li>LMS providers</li>
+                  <li>Cloud and AI providers</li>
+                  <li>Accreditation organizations</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Key activities</h3>
+                <ul>
+                  <li>AI-assisted grading</li>
+                  <li>CLO analytics</li>
+                  <li>Appeals management</li>
+                  <li>Instructor support</li>
+                </ul>
+              </div>
+              <div class="panel center-value tall">
+                <h3>Value propositions</h3>
+                <ul>
+                  <li>Faster and more accurate grading</li>
+                  <li>Human-in-the-Loop verification</li>
+                  <li>Automated CLO tracking</li>
+                  <li>Transparent appeals</li>
+                  <li>Accreditation-ready reporting</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Relationships</h3>
+                <ul>
+                  <li>Personalized onboarding</li>
+                  <li>Technical support</li>
+                  <li>Training workshops</li>
+                  <li>Long-term partnerships</li>
+                </ul>
+              </div>
+              <div class="panel tall">
+                <h3>Customers</h3>
+                <ul>
+                  <li>Instructors</li>
+                  <li>Professors</li>
+                  <li>Department leads</li>
+                  <li>Universities with heavy assessment loads</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Resources</h3>
+                <ul>
+                  <li>AI grading system</li>
+                  <li>Cloud infrastructure</li>
+                  <li>Development team</li>
+                  <li>Education experts</li>
+                </ul>
+              </div>
+              <div class="panel">
+                <h3>Channels</h3>
+                <ul>
+                  <li>Direct university sales</li>
+                  <li>Website demos</li>
+                  <li>Academic conferences</li>
+                  <li>LMS integrations</li>
+                  <li>Faculty referrals</li>
+                </ul>
+              </div>
+            </div>
+            <div class="footer">
+              <span>Business model canvas</span><span>10 / 11</span>
+            </div>
+          </section>
 
-  slides.forEach((slide, index) => {
-    const button = document.createElement("button");
-    button.className = "nav-item";
-    button.innerHTML = `<span class="num">${String(index + 1).padStart(2, "0")}</span><span>${slide.dataset.title}</span>`;
-    button.addEventListener("click", () => go(index));
-    navList.appendChild(button);
-  });
+          <section class="slide qa" data-title="Questions">
+            <h2>Questions?</h2>
+            <p>
+              AEGAS - Human-in-the-Loop AI grading and accreditation-ready
+              reporting.
+            </p>
+            <div class="footer" style="width: 100%">
+              <span>ENT 242 business presentation</span><span>11 / 11</span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
 
-  const navItems = Array.from(document.querySelectorAll(".nav-item"));
+    <script>
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const navList = document.getElementById("navList");
+      const counter = document.getElementById("counter");
+      const progress = document.getElementById("progress");
+      const deck = document.getElementById("deck");
+      const app = document.getElementById("app");
+      const toggleNav = document.getElementById("toggleNav");
+      const toggleFullscreen = document.getElementById("toggleFullscreen");
+      let current = 0;
 
-  function fitDeck() {
-    if (window.matchMedia("(max-width: 900px)").matches) {
-      deck.style.transform = "none";
-      return;
-    }
-    const stage = document.querySelector(".stage");
-    const scale = Math.min((stage.clientWidth - 56) / 1280, (stage.clientHeight - 56) / 720, 1);
-    deck.style.transform = `scale(${Math.max(scale, .48)})`;
-  }
+      slides.forEach((slide, index) => {
+        const button = document.createElement("button");
+        button.className = "nav-item";
+        button.innerHTML = `<span class="num">${String(index + 1).padStart(2, "0")}</span><span>${slide.dataset.title}</span>`;
+        button.addEventListener("click", () => go(index));
+        navList.appendChild(button);
+      });
 
-  function go(index, updateHash = true) {
-    current = Math.max(0, Math.min(slides.length - 1, index));
-    slides.forEach((slide, i) => slide.classList.toggle("active", i === current));
-    navItems.forEach((item, i) => item.classList.toggle("active", i === current));
-    counter.textContent = `${current + 1} / ${slides.length}`;
-    progress.style.width = `${((current + 1) / slides.length) * 100}%`;
-    if (updateHash) history.replaceState(null, "", `#${current + 1}`);
-  }
+      const navItems = Array.from(document.querySelectorAll(".nav-item"));
 
-  document.getElementById("prev").addEventListener("click", () => go(current - 1));
-  document.getElementById("next").addEventListener("click", () => go(current + 1));
+      function fitDeck() {
+        if (window.matchMedia("(max-width: 900px)").matches) {
+          deck.style.transform = "none";
+          return;
+        }
+        const stage = document.querySelector(".stage");
+        const scale = Math.min(
+          (stage.clientWidth - 56) / 1280,
+          (stage.clientHeight - 56) / 720,
+          1,
+        );
+        deck.style.transform = `scale(${Math.max(scale, 0.48)})`;
+      }
 
-  function setNavCollapsed(collapsed) {
-    app.classList.toggle("nav-collapsed", collapsed);
-    toggleNav.textContent = collapsed ? "Show" : "Nav";
-    toggleNav.setAttribute("aria-pressed", String(collapsed));
-    window.setTimeout(fitDeck, 190);
-  }
+      function go(index, updateHash = true) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, i) =>
+          slide.classList.toggle("active", i === current),
+        );
+        navItems.forEach((item, i) =>
+          item.classList.toggle("active", i === current),
+        );
+        counter.textContent = `${current + 1} / ${slides.length}`;
+        progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        if (updateHash) history.replaceState(null, "", `#${current + 1}`);
+      }
 
-  function toggleSidebar() {
-    setNavCollapsed(!app.classList.contains("nav-collapsed"));
-  }
+      document
+        .getElementById("prev")
+        .addEventListener("click", () => go(current - 1));
+      document
+        .getElementById("next")
+        .addEventListener("click", () => go(current + 1));
 
-  async function toggleFullscreenMode() {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen?.();
-      setNavCollapsed(true);
-    } else {
-      await document.exitFullscreen?.();
-    }
-    window.setTimeout(fitDeck, 80);
-  }
+      function setNavCollapsed(collapsed) {
+        app.classList.toggle("nav-collapsed", collapsed);
+        toggleNav.textContent = collapsed ? "Show" : "Nav";
+        toggleNav.setAttribute("aria-pressed", String(collapsed));
+        window.setTimeout(fitDeck, 190);
+      }
 
-  toggleNav.addEventListener("click", toggleSidebar);
-  toggleFullscreen.addEventListener("click", toggleFullscreenMode);
-  document.addEventListener("fullscreenchange", () => {
-    toggleFullscreen.textContent = document.fullscreenElement ? "Exit" : "Full";
-    window.setTimeout(fitDeck, 80);
-  });
+      function toggleSidebar() {
+        setNavCollapsed(!app.classList.contains("nav-collapsed"));
+      }
 
-  window.addEventListener("keydown", (event) => {
-    if (event.key.toLowerCase() === "s") {
-      event.preventDefault();
-      toggleSidebar();
-    }
-    if (event.key.toLowerCase() === "f") {
-      event.preventDefault();
-      toggleFullscreenMode();
-    }
-    if (["ArrowRight", "PageDown", " "].includes(event.key)) {
-      event.preventDefault();
-      go(current + 1);
-    }
-    if (["ArrowLeft", "PageUp"].includes(event.key)) {
-      event.preventDefault();
-      go(current - 1);
-    }
-    if (event.key === "Home") go(0);
-    if (event.key === "End") go(slides.length - 1);
-  });
+      async function toggleFullscreenMode() {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen?.();
+          setNavCollapsed(true);
+        } else {
+          await document.exitFullscreen?.();
+        }
+        window.setTimeout(fitDeck, 80);
+      }
 
-  window.addEventListener("resize", fitDeck);
-  const initialSlide = Number.parseInt(location.hash.replace("#", ""), 10);
-  go(Number.isFinite(initialSlide) ? initialSlide - 1 : 0, false);
-  if (new URLSearchParams(location.search).get("present") === "1") {
-    setNavCollapsed(true);
-  }
-  fitDeck();
-</script>
-</body>
+      toggleNav.addEventListener("click", toggleSidebar);
+      toggleFullscreen.addEventListener("click", toggleFullscreenMode);
+      document.addEventListener("fullscreenchange", () => {
+        toggleFullscreen.textContent = document.fullscreenElement
+          ? "Exit"
+          : "Full";
+        window.setTimeout(fitDeck, 80);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.key.toLowerCase() === "s") {
+          event.preventDefault();
+          toggleSidebar();
+        }
+        if (event.key.toLowerCase() === "f") {
+          event.preventDefault();
+          toggleFullscreenMode();
+        }
+        if (["ArrowRight", "PageDown", " "].includes(event.key)) {
+          event.preventDefault();
+          go(current + 1);
+        }
+        if (["ArrowLeft", "PageUp"].includes(event.key)) {
+          event.preventDefault();
+          go(current - 1);
+        }
+        if (event.key === "Home") go(0);
+        if (event.key === "End") go(slides.length - 1);
+      });
+
+      window.addEventListener("resize", fitDeck);
+      const initialSlide = Number.parseInt(location.hash.replace("#", ""), 10);
+      go(Number.isFinite(initialSlide) ? initialSlide - 1 : 0, false);
+      if (new URLSearchParams(location.search).get("present") === "1") {
+        setNavCollapsed(true);
+      }
+      fitDeck();
+    </script>
+  </body>
 </html>
